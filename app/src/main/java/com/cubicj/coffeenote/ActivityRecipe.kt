@@ -110,7 +110,7 @@ class ActivityRecipe:AppCompatActivity(), RecipeInsertListener {
         }
     }
 
-    @SuppressLint("MissingInflatedId")
+    @SuppressLint("MissingInflatedId", "SetTextI18n", "DefaultLocale")
     private fun showHandInputDialog() {
         val mRecipeSelectView =
             LayoutInflater.from(this).inflate(R.layout.custom_hand_recipe, null)
