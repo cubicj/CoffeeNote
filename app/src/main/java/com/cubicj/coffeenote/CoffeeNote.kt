@@ -50,6 +50,7 @@ class CoffeeNote: AppCompatActivity() {
         )
     }
 
+
     private val binding get() = mBinding!!
 
     private val startForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
