@@ -757,7 +757,6 @@ class ActivityRecipe:AppCompatActivity(), RecipeInsertListener {
                         }
                     }
                 }
-
                 bottomSheetDialog?.show()
             }
 
