@@ -260,11 +260,10 @@
             android:id="@+id/btn_coffee_recipe_save"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
             android:text="저장"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/btn_coffee_recipe_cancel"
+            app:layout_constraintEnd_toStartOf="@+id/btn_coffee_recipe_cancel"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.0" />
 
@@ -272,10 +271,11 @@
             android:id="@+id/btn_coffee_recipe_cancel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
             android:text="취소"
             app:layout_constraintBottom_toBottomOf="@+id/btn_coffee_recipe_save"
-            app:layout_constraintEnd_toStartOf="@+id/btn_coffee_recipe_save"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/btn_coffee_recipe_save"
             app:layout_constraintTop_toTopOf="@+id/btn_coffee_recipe_save"
             app:layout_constraintVertical_bias="0.0" />
 
