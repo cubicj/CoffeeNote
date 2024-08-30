@@ -55,6 +55,7 @@ data class Recipe(
     )],
     indices = [Index(value = ["recipeId"])]
 )
+@TypeConverters(Converters::class)
 data class HandDripRecipeDetails(
     @PrimaryKey var recipeId: Long, // Recipe 엔티티의 id와 1:1 관계
     @ColumnInfo(name = "그라인더") var selectedgrinder: String,
@@ -73,6 +74,7 @@ data class HandDripRecipeDetails(
     )],
     indices = [Index(value = ["recipeId"])]
 )
+@TypeConverters(Converters::class)
 data class AeropressRecipeDetails(
     @PrimaryKey var recipeId: Long, // Recipe 엔티티의 id와 1:1 관계
     @ColumnInfo(name = "그라인더") var selectedgrinder: String,
@@ -84,6 +86,7 @@ data class AeropressRecipeDetails(
     @ColumnInfo(name = "필터_종류") var selectedfilter: String? = null
 )
 
+@TypeConverters(Converters::class)
 data class RecipeWithDetails(
     @Embedded val recipe: Recipe,
     @Relation(

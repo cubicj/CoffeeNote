@@ -66,9 +66,6 @@ class RecipeAdapter(
     init {
         context.lifecycleScope.launch {
             context.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.recipes.collect { recipes ->
-                    updateRecipes(recipes)
-                }
             }
         }
     }
@@ -110,44 +107,11 @@ class RecipeAdapter(
 
                     val recipebasemodify =
                         recipeinfoAlertDialog.findViewById<Button>(R.id.btn_recipe_select_basemodify)
-                    val recipebrewingmodify =
-                        recipeinfoAlertDialog.findViewById<Button>(R.id.btn_recipe_select_brewingmodify)
                     val recipedelete =
                         recipeinfoAlertDialog.findViewById<Button>(R.id.btn_recipe_select_delete)
                     val recipeBack =
                         recipeinfoAlertDialog.findViewById<ImageButton>(R.id.ib_recipe_info_select_back)
-                    val recipeMemo =
-                        recipeinfoAlertDialog.findViewById<Button>(R.id.btn_recipe_select_memo)
 
-                    recipeMemo?.setOnClickListener {
-                        val memoAlertDialog: AlertDialog?
-
-                        val memoSelectView = LayoutInflater.from(parent.context)
-                            .inflate(R.layout.memo_add, null)
-                        val memoSelectBuilder = AlertDialog.Builder(parent.context)
-                            .setView(memoSelectView)
-
-                        memoAlertDialog = memoSelectBuilder.create()
-
-                        memoAlertDialog.show()
-
-                        val memoBack = memoSelectView.findViewById<ImageButton>(R.id.ib_memo_back)
-                        val memoCancel = memoSelectView.findViewById<Button>(R.id.btn_memo_cancel)
-                        val memoConfirm = memoSelectView.findViewById<Button>(R.id.btn_memo_confirm)
-                        val memoContent = memoSelectView.findViewById<EditText>(R.id.et_memo)
-
-                        memoConfirm.setOnClickListener {
-                            val memo = memoContent.text.toString()
-                            viewModel.updateRecipeMemo(recipe.id, memo) // 메모 업데이트
-                            memoAlertDialog.dismiss()
-                        }
-                        memoBack.setOnClickListener {
-                            memoAlertDialog.dismiss()
-                        }
-                        memoCancel.setOnClickListener {
-                            memoAlertDialog.dismiss()
-                        }
-                    }
 
                     recipebasemodify?.setOnClickListener {
                         val dialogView =
@@ -166,7 +130,6 @@ class RecipeAdapter(
                             dialogView.findViewById<Button>(R.id.btn_coffee_recipe_save)
                         val modifyCancelButton =
                             dialogView.findViewById<Button>(R.id.btn_coffee_recipe_cancel)
-                        var selectedIconTemp = recipe.iconTemp
                         var updatedRelativeTouchX: Float? = null
                         var updatedRelativeTouchY: Float? = null
                         val modifyrecipeBack =
@@ -180,14 +143,10 @@ class RecipeAdapter(
                             .withZone(ZoneId.systemDefault())
                         modifyDateButton.text = formatter.format(recipe.date)
                         modifyTempButton.text = "${recipe.temp}°C"
-                        modifyGrinderButton.text = recipe.grinder
                         modifyScoreButton.text =
                             String.format("%.2f", recipe.score.toFloatOrNull() ?: 0f)
 
-                        when (recipe.iconTemp) {
-                            "hot" -> modifyHotoriceRadioGroup.check(R.id.rbtn_coffee_recipe_hot)
-                            "ice" -> modifyHotoriceRadioGroup.check(R.id.rbtn_coffee_recipe_ice)
-                        }
+
 
                         val modifyDialog = AlertDialog.Builder(context)
                             .setView(dialogView)
@@ -290,13 +249,6 @@ class RecipeAdapter(
                             val backButton =
                                 grinderSelectView.findViewById<ImageButton>(R.id.ib_grinder_back)
 
-                            // 초기값 설정 (기존 grinder 값을 "x-y" 형태로 변환)
-                            val initialGrinderValues = recipe.grinder.split("-")
-                            val initialGroup = initialGrinderValues[0].toIntOrNull() ?: 1
-                            val initialStep = initialGrinderValues[1].toIntOrNull() ?: 0
-                            val initialProgress = (initialGroup - 1) * 3 + initialStep - 1
-                            seekBar.progress = initialProgress
-                            grinderValue.text = recipe.grinder
 
                             seekBar.setOnSeekBarChangeListener(object :
                                 SeekBar.OnSeekBarChangeListener {
@@ -523,20 +475,13 @@ class RecipeAdapter(
                             }
                         }
 
-                        modifyHotoriceRadioGroup.setOnCheckedChangeListener { _, checkedId ->
-                            when (checkedId) {
-                                R.id.rbtn_coffee_recipe_hot -> selectedIconTemp = "hot"
-                                R.id.rbtn_coffee_recipe_ice -> selectedIconTemp = "ice"
-                            }
-                        }
+
                         modifyConfirmButton.setOnClickListener {
                             context.lifecycleScope.launch(Dispatchers.IO) {
                                 recipe.date = LocalDate.parse(modifyDateButton.text, formatter)
                                     .atStartOfDay(ZoneId.systemDefault()).toInstant()
                                 recipe.temp = modifyTempButton.text.toString().replace("°C", "")
-                                recipe.grinder = modifyGrinderButton.text.toString()
                                 recipe.score = modifyScoreButton.text.toString()
-                                recipe.iconTemp = selectedIconTemp
                                 recipe.scoreRelativeX =
                                     updatedRelativeTouchX ?: recipe.scoreRelativeX
                                 recipe.scoreRelativeY =
@@ -548,7 +493,6 @@ class RecipeAdapter(
                                     "Updating scoreRelativeX: ${recipe.scoreRelativeX}, scoreRelativeY: ${recipe.scoreRelativeY}"
                                 )
 
-                                viewModel.updateRecipe(recipe)
 
                                 withContext(Dispatchers.Main) {
                                     modifyDialog.dismiss()
@@ -566,13 +510,7 @@ class RecipeAdapter(
                     }
 
 
-                    recipebrewingmodify?.setOnClickListener {
-                        val intent = Intent(context, BrewingModifyActivity::class.java)
-                        // intent.putExtra("recipeId", recipe.id) // 변경 필요
-                        intent.putExtra("recipeId", recipe.id) // Int -> Long 변환하여 전달
-                        context.startActivity(intent)
-                        recipeinfoAlertDialog.dismiss()
-                    }
+
 
                     recipedelete?.setOnClickListener {
                         // 삭제할 레시피 가져오기 (differ 사용)
@@ -593,8 +531,6 @@ class RecipeAdapter(
                             deleterecipeInfoSelectView.findViewById<Button>(R.id.btn_delete_cancel)
 
                         deleteconfirm.setOnClickListener {
-                            // ViewModel의 deleteRecipe 함수 호출하여 레시피 삭제
-                            viewModel.deleteRecipe(recipeToDelete)
 
                             deleterecipeinfoAlertDialog!!.dismiss()
                             recipeinfoAlertDialog.dismiss()
@@ -640,13 +576,6 @@ class RecipeAdapter(
 
             binding.tvRecipeDate.text = formatter.format(recipe.date) // recipe.date 사용
             binding.tvRecipeScore.text = roundedScore // roundedScore 사용
-
-            val iconTempResource = when (recipe.iconTemp) {
-                "hot" -> R.drawable.hot
-                "ice" -> R.drawable.ice
-                else -> R.drawable.hot
-            }
-            binding.ivRecipeHotorice.setImageResource(iconTempResource)
             binding.tvDrinkPerson.text = recipe.drinkPerson
         }
     }

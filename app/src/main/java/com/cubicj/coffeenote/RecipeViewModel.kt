@@ -43,19 +43,6 @@ class RecipeViewModel(
         }
     }
 
-    fun loadRecipesByBeanIdAndBrewMethod(beanId: Long, brewMethod: String? = null) {
-        viewModelScope.launch(Dispatchers.IO) {
-            val recipesList = if (brewMethod != null) {
-                recipeDao.getRecipesWithDetailsByBeanIdAndBrewMethod(beanId, brewMethod)
-            } else {
-                // 모든 레시피를 조회할 때도 상세 정보를 함께 가져오도록 수정
-                recipeDao.getRecipesWithDetailsByBeanIdAndBrewMethod(beanId, "handdrip") +
-                        recipeDao.getRecipesWithDetailsByBeanIdAndBrewMethod(beanId, "aeropress")
-            }
-            _recipes.value = recipesList.sortedByDescending { it.recipe.date }
-        }
-    }
-
     // 새로운 레시피 추가 - HandDripRecipeDetails 처리 추가
     fun insertRecipe(recipe: Recipe, handDripDetails: HandDripRecipeDetails? = null) {
         viewModelScope.launch(Dispatchers.IO) {

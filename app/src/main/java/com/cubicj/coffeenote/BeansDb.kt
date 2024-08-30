@@ -13,7 +13,7 @@ import androidx.room.RoomDatabase
     HandDripRecipeDetails::class,
     AeropressRecipeDetails::class
                      ],
-    version = 2, exportSchema = false)
+    version = 3, exportSchema = false)
 abstract class BeansDb: RoomDatabase() {
 
     abstract fun coffeeBeansDao(): CoffeeBeansDao

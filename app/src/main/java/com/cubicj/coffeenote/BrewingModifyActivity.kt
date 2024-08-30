@@ -32,8 +32,6 @@ class BrewingModifyActivity : AppCompatActivity() {
                 val existingRecipe = db.recipeDao().getRecipeById(recipeId)
 
                 existingRecipe?.let {
-                    it.recordedTimes = recordedTimes
-                    it.recordedAmounts = recordedAmount
                     db.recipeDao().update(it)
                 }
             }

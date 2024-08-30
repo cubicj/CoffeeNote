@@ -50,20 +50,7 @@ class Recipe_Info : AppCompatActivity() {
                         .withZone(ZoneId.systemDefault())
                     binding.tvInfoDate.text = it.date?.let { formatter.format(it) } ?: "날짜 없음"
                     binding.tvInfoTemp.text = "${it.temp}°C"
-                    binding.tvInfoGrinder.text = it.grinder
 
-                    val iconTempResource = when (it.iconTemp) {
-                        "hot" -> R.drawable.hot
-                        "ice" -> R.drawable.ice
-                        else -> R.drawable.hot
-                    }
-                    binding.ivInfoHotorice.setImageResource(iconTempResource)
-
-                    val recordedTimesString = it.recordedTimes.joinToString(" - ")
-                    binding.tvInfoTime.text = "추출 시간(초): $recordedTimesString"
-
-                    val recordedAmountsString = it.recordedAmounts.joinToString(" - ")
-                    binding.tvInfoPour.text = "푸어링 양(ml): $recordedAmountsString"
 
                     Log.d("Recipe_Info", "Received scoreRelativeX: ${it.scoreRelativeX}, scoreRelativeY: ${it.scoreRelativeY}")
                     binding.scorePointView.scoreRelativeX = it.scoreRelativeX ?: 0f

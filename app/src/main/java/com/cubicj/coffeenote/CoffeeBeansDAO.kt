@@ -76,16 +76,6 @@ interface RecipeDao {
     @Delete
     suspend fun deleteAeropressRecipeDetails(details: AeropressRecipeDetails)
 
-    // Recipe와 상세 정보를 함께 조회하는 메서드
-    @Transaction
-    @Query("""
-        SELECT * FROM recipes 
-        LEFT JOIN handdrip_recipe_details ON recipes.id = handdrip_recipe_details.recipeId
-        LEFT JOIN aeropress_recipe_details ON recipes.id = aeropress_recipe_details.recipeId
-        WHERE beanId = :beanId AND brewMethod = :brewMethod
-    """)
-    fun getRecipesWithDetailsByBeanIdAndBrewMethod(beanId: Long, brewMethod: String): List<RecipeWithDetails>
-
     // 특정 Recipe ID에 대한 상세 정보 조회 메서드 (필요에 따라 추가)
     @Transaction
     @Query("""

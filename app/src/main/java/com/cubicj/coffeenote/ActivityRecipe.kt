@@ -78,8 +78,6 @@ class ActivityRecipe:AppCompatActivity(), RecipeInsertListener {
 
     override fun onRecipeInserted(recipe: Recipe) {
         lifecycleScope.launch(Dispatchers.Main) {
-            // 전체 레시피 목록 다시 로드
-            viewModel.loadRecipesByBeanIdAndBrewMethod(selectedBeanId)
 
             Toast.makeText(applicationContext, "입력되었습니다.", Toast.LENGTH_SHORT).show()
             mAlertDialog!!.dismiss()
@@ -643,7 +641,6 @@ class ActivityRecipe:AppCompatActivity(), RecipeInsertListener {
                     RecipeSortMode.DATE_DESC -> recipes.sortedByDescending { it.recipe.date }
                     RecipeSortMode.SCORE_DESC -> recipes.sortedByDescending { it.recipe.score.toFloatOrNull() ?: 0f }
                 }
-                mAdapter.updateRecipes(sortedRecipes) // 어댑터에 정렬된 목록 전달
             }
         }
     }
@@ -682,7 +679,6 @@ class ActivityRecipe:AppCompatActivity(), RecipeInsertListener {
                     LinearLayoutManager(this@ActivityRecipe, LinearLayoutManager.VERTICAL, false)
                 binding.rvRecipe.setHasFixedSize(true)
 
-                viewModel.loadRecipesByBeanIdAndBrewMethod(selectedBeanId)
 
                 lifecycleScope.launch {
                     repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -747,7 +743,7 @@ class ActivityRecipe:AppCompatActivity(), RecipeInsertListener {
                             // 선택된 마신 사람에 따라 레시피 필터링
                             lifecycleScope.launchWhenStarted {
                                 viewModel.filterRecipesByDrinkPerson(selectedBeanId, selectedText).collect { filteredRecipes ->
-                                    viewModel.updateRecipes(filteredRecipes) // 필터링된 레시피 목록 업데이트
+                                // 필터링된 레시피 목록 업데이트
                                 }
                             }
                         }
@@ -768,8 +764,6 @@ class ActivityRecipe:AppCompatActivity(), RecipeInsertListener {
                 showCoffeeRecipeDialog()
             }
 
-            // 뷰 모델을 통해 레시피 목록 로드 (onCreate에서 호출)
-            viewModel.loadRecipesByBeanIdAndBrewMethod(selectedBeanId)
         }
     }
 }
