@@ -46,48 +46,24 @@
             android:layout_marginStart="32dp"
             android:layout_marginTop="32dp"
             android:layout_marginEnd="32dp"
+            android:layout_marginBottom="32dp"
             android:text="레시피 기본 정보 수정"
-            app:layout_constraintBottom_toTopOf="@+id/btn_recipe_select_brewingmodify"
+            app:layout_constraintBottom_toTopOf="@+id/btn_recipe_select_delete"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-
-        <Button
-            android:id="@+id/btn_recipe_select_brewingmodify"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="32dp"
-            android:layout_marginEnd="32dp"
-            android:text="브루잉 방식 수정"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btn_recipe_select_basemodify" />
 
         <Button
             android:id="@+id/btn_recipe_select_delete"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
-            android:layout_marginTop="32dp"
             android:layout_marginEnd="32dp"
             android:layout_marginBottom="32dp"
             android:text="레시피 삭제"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btn_recipe_select_memo" />
+            app:layout_constraintStart_toStartOf="parent" />
 
-        <Button
-            android:id="@+id/btn_recipe_select_memo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="32dp"
-            android:layout_marginEnd="32dp"
-            android:text="메모 작성"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btn_recipe_select_brewingmodify" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
