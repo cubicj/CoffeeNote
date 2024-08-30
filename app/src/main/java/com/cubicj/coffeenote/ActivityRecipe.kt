@@ -615,6 +615,7 @@ class ActivityRecipe:AppCompatActivity(), RecipeInsertListener {
             }
         }
 
+
         // BottomSheetDialog가 처음 표시될 때 "전체" 라디오 버튼 선택
         bottomSheetDialog?.setOnShowListener {
             allRadioButton.isChecked = true
