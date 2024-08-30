@@ -74,6 +74,8 @@ class NoteAdapter(
                 false
             }
 
+
+
             binding.root.setOnClickListener {
                 val position = adapterPosition
                 if (position != RecyclerView.NO_POSITION){
