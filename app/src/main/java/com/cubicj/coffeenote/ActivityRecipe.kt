@@ -77,12 +77,11 @@ class ActivityRecipe:AppCompatActivity(), RecipeInsertListener {
 
 
     override fun onRecipeInserted(recipe: Recipe) {
+        // ViewModel을 통해 레시피 추가 후 자동으로 목록 갱신되도록 수정
         lifecycleScope.launch(Dispatchers.Main) {
-
             Toast.makeText(applicationContext, "입력되었습니다.", Toast.LENGTH_SHORT).show()
             mAlertDialog!!.dismiss()
 
-            // drinkPerson 값 초기화 및 selectDrinkPerson 버튼 텍스트 업데이트
             drinkPerson = "나"
             selectDrinkPerson?.text = drinkPerson
         }
@@ -634,13 +633,15 @@ class ActivityRecipe:AppCompatActivity(), RecipeInsertListener {
     }
 
     private fun updateRecipeList() {
-        lifecycleScope.launch {
-            // 뷰모델의 recipes를 다시 수집하여 정렬된 목록을 가져옴
+        // recipes 갱신 시 UI 업데이트 (RecipeAdapter의 updateRecipes 함수 활용)
+        lifecycleScope.launchWhenStarted {
             viewModel.recipes.collect { recipes ->
                 val sortedRecipes = when (currentSortMode) {
                     RecipeSortMode.DATE_DESC -> recipes.sortedByDescending { it.recipe.date }
                     RecipeSortMode.SCORE_DESC -> recipes.sortedByDescending { it.recipe.score.toFloatOrNull() ?: 0f }
                 }
+                // RecipeWithDetails -> Recipe 변환하여 Adapter에 전달
+                mAdapter.updateRecipes(sortedRecipes.map { it.recipe })
             }
         }
     }
@@ -679,6 +680,7 @@ class ActivityRecipe:AppCompatActivity(), RecipeInsertListener {
                     LinearLayoutManager(this@ActivityRecipe, LinearLayoutManager.VERTICAL, false)
                 binding.rvRecipe.setHasFixedSize(true)
 
+                updateRecipeList()
 
                 lifecycleScope.launch {
                     repeatOnLifecycle(Lifecycle.State.STARTED) {
