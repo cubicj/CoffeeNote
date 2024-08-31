@@ -3,20 +3,17 @@ package com.cubicj.coffeenote
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.cubicj.coffeenote.databinding.ActivityRecipeInfoBinding
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.util.Locale
 
 
-class Recipe_Info : AppCompatActivity() {
+class RecipeInfoActivity : AppCompatActivity() {
 
     private var mBinding: ActivityRecipeInfoBinding? = null
     private val binding get() = mBinding!!

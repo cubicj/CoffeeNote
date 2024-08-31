@@ -39,7 +39,7 @@ import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.util.Locale
 
-class ActivityRecipe:AppCompatActivity(), RecipeInsertListener {
+class RecipeActivity:AppCompatActivity(), RecipeInsertListener {
     private var mBinding: ActivityRecipeBinding? = null
     private var coffeebeansDb: BeansDb? = null
     private var mAlertDialog: AlertDialog? = null
@@ -288,9 +288,9 @@ class ActivityRecipe:AppCompatActivity(), RecipeInsertListener {
                 ViewGroup.OnHierarchyChangeListener {
                 override fun onChildViewAdded(parent: View?, child: View?) {
                     child?.setOnLongClickListener {
-                        val radioDeleteSelectView = LayoutInflater.from(this@ActivityRecipe)
+                        val radioDeleteSelectView = LayoutInflater.from(this@RecipeActivity)
                             .inflate(R.layout.delete_alert, null)
-                        val radioDeleteSelectBuilder = AlertDialog.Builder(this@ActivityRecipe)
+                        val radioDeleteSelectBuilder = AlertDialog.Builder(this@RecipeActivity)
                             .setView(radioDeleteSelectView)
 
                         radioDeleteAlertDialog = radioDeleteSelectBuilder.create()
@@ -383,7 +383,7 @@ class ActivityRecipe:AppCompatActivity(), RecipeInsertListener {
                             drinkAlertDialog?.findViewById<RadioGroup>(R.id.rdg_drink_person)
                         drinkPersonGroup?.removeAllViews()
                         currentGroup.groupNames.forEach { name ->
-                            val radioButton = RadioButton(this@ActivityRecipe)
+                            val radioButton = RadioButton(this@RecipeActivity)
                             radioButton.text = name
                             drinkPersonGroup?.addView(radioButton)
 
@@ -599,14 +599,14 @@ class ActivityRecipe:AppCompatActivity(), RecipeInsertListener {
         selectDrinkGroup.removeAllViews() // 기존 라디오 버튼 모두 제거
 
         // "전체" 라디오 버튼 추가
-        val allRadioButton = RadioButton(this@ActivityRecipe)
+        val allRadioButton = RadioButton(this@RecipeActivity)
         allRadioButton.text = "전체"
         selectDrinkGroup.addView(allRadioButton, 0) // 맨 위에 추가
 
         drinkPersonGroups.forEach { group ->
             val uniqueNames = group.groupNames.toSet().toList() // 중복 제거
             uniqueNames.forEach { name ->
-                val radioButton = RadioButton(this@ActivityRecipe)
+                val radioButton = RadioButton(this@RecipeActivity)
                 radioButton.text = name
                 selectDrinkGroup.addView(radioButton)
             }
@@ -663,7 +663,7 @@ class ActivityRecipe:AppCompatActivity(), RecipeInsertListener {
         binding.btnOrderDrinkPerson.setBackgroundColor(Color.GRAY)
 
         val bottomSheetView = layoutInflater.inflate(R.layout.select_drink_person, null)
-        bottomSheetDialog = BottomSheetDialog(this@ActivityRecipe)
+        bottomSheetDialog = BottomSheetDialog(this@RecipeActivity)
         bottomSheetDialog?.setContentView(bottomSheetView)
 
         lifecycleScope.launch(Dispatchers.IO) {
@@ -674,10 +674,10 @@ class ActivityRecipe:AppCompatActivity(), RecipeInsertListener {
             }
 
             withContext(Dispatchers.Main) {
-                mAdapter = RecipeAdapter(this@ActivityRecipe, viewModel)
+                mAdapter = RecipeAdapter(this@RecipeActivity, viewModel)
                 binding.rvRecipe.adapter = mAdapter
                 binding.rvRecipe.layoutManager =
-                    LinearLayoutManager(this@ActivityRecipe, LinearLayoutManager.VERTICAL, false)
+                    LinearLayoutManager(this@RecipeActivity, LinearLayoutManager.VERTICAL, false)
                 binding.rvRecipe.setHasFixedSize(true)
 
                 updateRecipeList()

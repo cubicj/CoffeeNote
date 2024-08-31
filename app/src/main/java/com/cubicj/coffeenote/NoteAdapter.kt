@@ -3,31 +3,25 @@ package com.cubicj.coffeenote
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Rect
-import android.provider.ContactsContract.CommonDataKinds.Note
 import android.view.LayoutInflater
 import android.view.MotionEvent
-import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
-import android.widget.CheckBox
 import android.widget.EditText
-import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.cubicj.coffeenote.databinding.ListCoffeeNoteBinding
-import com.cubicj.coffeenote.databinding.ListCoffeeRecipeBinding
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 class NoteAdapter(
-    val context: CoffeeNote,
+    val context: NoteActivity,
     private val viewModel: CoffeeNoteViewModel
 ) : RecyclerView.Adapter<NoteAdapter.Holder>() {
 

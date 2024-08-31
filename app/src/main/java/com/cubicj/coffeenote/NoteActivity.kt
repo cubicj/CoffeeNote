@@ -6,7 +6,6 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.Rect
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -23,17 +22,14 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.cubicj.coffeenote.databinding.CoffeeBeansNoteBinding
 import kotlinx.coroutines.launch
-import kotlin.math.log
 
-class CoffeeNote: AppCompatActivity() {
+class NoteActivity: AppCompatActivity() {
 
     private var mBinding: CoffeeBeansNoteBinding? = null
     private lateinit var noteAdapter: NoteAdapter
@@ -79,7 +75,7 @@ class CoffeeNote: AppCompatActivity() {
         viewModel.setSelectedNoteNames(selectedNoteNames)
 
         // NoteAdapter 생성 시 connectedNoteIds 전달
-        noteAdapter = NoteAdapter(this@CoffeeNote, viewModel)
+        noteAdapter = NoteAdapter(this@NoteActivity, viewModel)
 
         binding.rvCoffeeNote.adapter = noteAdapter
         binding.rvCoffeeNote.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
@@ -156,7 +152,7 @@ class CoffeeNote: AppCompatActivity() {
             val noteAddCancel = noteAddSelectView.findViewById<Button>(R.id.btn_note_create_cancel)
 
             noteAddColor?.setOnClickListener {
-                val intent = Intent(this@CoffeeNote, Color_Picker::class.java)
+                val intent = Intent(this@NoteActivity, Color_Picker::class.java)
                 startForResult.launch(intent)
             }
 

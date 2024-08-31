@@ -37,7 +37,7 @@ import java.time.format.DateTimeFormatter
 import java.util.Locale
 
 class RecipeAdapter(
-    val context: ActivityRecipe,
+    val context: RecipeActivity,
     private val viewModel: RecipeViewModel
 ): RecyclerView.Adapter<RecipeAdapter.Holder>() {
 
@@ -88,7 +88,7 @@ class RecipeAdapter(
                 if (curPos in 0 until differ.currentList.size) {
                     val recipe = differ.currentList[curPos]
 
-                    val intent = Intent(context, Recipe_Info::class.java)
+                    val intent = Intent(context, RecipeInfoActivity::class.java)
                     Log.d("RecipeAdapter", "Sending recipeId: ${recipe.id}")
                     intent.putExtra("selectedRecipe", recipe.id)
                     context.startActivity(intent)

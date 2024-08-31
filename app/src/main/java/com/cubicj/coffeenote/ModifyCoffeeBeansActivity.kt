@@ -226,7 +226,7 @@ class ModifyCoffeeBeansActivity : AppCompatActivity() {
         }
 
         binding.btnCustomBeansNote.setOnClickListener {
-            val intent = Intent(this, CoffeeNote::class.java)
+            val intent = Intent(this, NoteActivity::class.java)
             intent.putExtra("selectedBeanId", selectedBeanId)
             val selectedNoteNames = checkedNotes.map { it.notename }
             intent.putStringArrayListExtra("selectedNoteNames", ArrayList(selectedNoteNames))

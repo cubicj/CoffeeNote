@@ -24,13 +24,13 @@
             android:name=".BrewingModifyActivity"
             android:exported="false" />
         <activity
-            android:name=".CoffeeNote"
+            android:name=".NoteActivity"
             android:exported="false" />
         <activity
-            android:name=".Recipe_Info"
+            android:name=".RecipeInfoActivity"
             android:exported="false" />
         <activity
-            android:name=".ActivityRecipe"
+            android:name=".RecipeActivity"
             android:exported="false" />
         <activity
             android:name=".Color_Picker"

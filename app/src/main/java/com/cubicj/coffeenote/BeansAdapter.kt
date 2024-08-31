@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.graphics.BitmapFactory
-import android.text.Html
 import android.text.Spannable
 import android.text.SpannableStringBuilder
 import android.text.style.ForegroundColorSpan
@@ -17,12 +16,10 @@ import android.widget.ScrollView
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.cubicj.coffeenote.databinding.ListCoffeeBeansBinding
-import kotlinx.coroutines.launch
 
 
 class BeansAdapter(
@@ -58,7 +55,7 @@ class BeansAdapter(
                 val curPos: Int = adapterPosition
                 if (curPos != RecyclerView.NO_POSITION && differ.currentList.isNotEmpty()) {
                     val beans: CoffeeBeans = differ.currentList[curPos]
-                    val intent = Intent(context, ActivityRecipe::class.java)
+                    val intent = Intent(context, RecipeActivity::class.java)
                     intent.putExtra("selectedBeanId", beans.id)
                     context.startActivity(intent)
                 }
