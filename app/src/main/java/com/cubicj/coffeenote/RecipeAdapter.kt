@@ -64,8 +64,14 @@ class RecipeAdapter(
     })
 
     init {
+        // ViewModel의 recipes StateFlow를 observe하여 리스트 자동 갱신
         context.lifecycleScope.launch {
             context.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.recipes.collect { recipesWithDetails ->
+                    // RecipeWithDetails에서 Recipe만 추출하여 리스트 업데이트
+                    val newRecipes = recipesWithDetails.map { it.recipe }
+                    updateRecipes(newRecipes)
+                }
             }
         }
     }
@@ -509,9 +515,6 @@ class RecipeAdapter(
                         modifyDialog.show()
                     }
 
-
-
-
                     recipedelete?.setOnClickListener {
                         // 삭제할 레시피 가져오기 (differ 사용)
                         val recipeToDelete = differ.currentList[curPos]
@@ -531,9 +534,20 @@ class RecipeAdapter(
                             deleterecipeInfoSelectView.findViewById<Button>(R.id.btn_delete_cancel)
 
                         deleteconfirm.setOnClickListener {
+                            // ViewModel의 deleteRecipe 함수 호출
+                            viewModel.deleteRecipe(
+                                RecipeWithDetails(
+                                    recipe = recipeToDelete,
+                                    handDripDetails = null, // 필요에 따라 수정
+                                    aeropressDetails = null // 필요에 따라 수정
+                                )
+                            )
 
                             deleterecipeinfoAlertDialog!!.dismiss()
                             recipeinfoAlertDialog.dismiss()
+
+                            // 삭제 성공 Toast 메시지 추가
+                            Toast.makeText(context, "레시피가 삭제되었습니다.", Toast.LENGTH_SHORT).show()
                         }
 
                         deletecancel.setOnClickListener {
