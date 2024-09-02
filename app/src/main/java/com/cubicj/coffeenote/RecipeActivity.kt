@@ -4,27 +4,15 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
-import android.os.VibrationEffect
 import android.os.Vibrator
-import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.Button
-import android.widget.CalendarView
-import android.widget.EditText
-import android.widget.ImageButton
-import android.widget.ImageView
-import android.widget.NumberPicker
 import android.widget.RadioButton
 import android.widget.RadioGroup
-import android.widget.SeekBar
-import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -34,11 +22,6 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.time.Instant
-import java.time.LocalDate
-import java.time.ZoneId
-import java.time.format.DateTimeFormatter
-import java.util.Locale
 
 class RecipeActivity:AppCompatActivity(), RecipeInsertListener {
     private var mBinding: ActivityRecipeBinding? = null
@@ -64,17 +47,14 @@ class RecipeActivity:AppCompatActivity(), RecipeInsertListener {
 
 
     override fun onRecipeInserted(recipe: Recipe) {
-        // ViewModel을 통해 레시피 추가 후 자동으로 목록 갱신되도록 수정
         lifecycleScope.launch(Dispatchers.Main) {
             Toast.makeText(applicationContext, "입력되었습니다.", Toast.LENGTH_SHORT).show()
-            mAlertDialog!!.dismiss()
-
-            drinkPerson = "나"
-            selectDrinkPerson?.text = drinkPerson
+            viewModel.insertRecipe(recipe)
+            updateRecipeList()
         }
     }
 
-    fun showCoffeeRecipeDialog(){
+    private fun showCoffeeRecipeDialog(){
         val brewMethodSelectView = LayoutInflater.from(this).inflate(R.layout.select_method, null)
         val brewMethodSelectBuilder = AlertDialog.Builder(this).setView(brewMethodSelectView)
         val brewMethodAlertDialog = brewMethodSelectBuilder.create()
@@ -86,6 +66,9 @@ class RecipeActivity:AppCompatActivity(), RecipeInsertListener {
         handdripButton.setOnClickListener {
             brewMethodAlertDialog.dismiss()
             val dialog = HandDripRecipeDialogFragment()
+            val args = Bundle()
+            args.putLong("selectedBeanId", selectedBeanId)
+            dialog.arguments = args
             dialog.show(supportFragmentManager, "HandDripRecipeDialogFragment")
         }
 

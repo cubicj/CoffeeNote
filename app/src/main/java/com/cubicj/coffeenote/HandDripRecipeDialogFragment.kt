@@ -56,6 +56,7 @@ class HandDripRecipeDialogFragment : DialogFragment(){
             // 구현하지 않았다면 예외를 발생시킵니다.
             throw RuntimeException("$context must implement RecipeInsertListener")
         }
+        vibrator = context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
     }
 
     override fun onCreateView(
@@ -70,6 +71,9 @@ class HandDripRecipeDialogFragment : DialogFragment(){
     @SuppressLint("SetTextI18n", "DefaultLocale", "UseGetLayoutInflater")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val selectedBeanId = arguments?.getLong("selectedBeanId", -1L) ?: -1L
+        viewModel.selectedBeanId = selectedBeanId
 
         var selectedInstant: Instant? = Instant.now()
         var currentTemp = 90
