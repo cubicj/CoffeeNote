@@ -51,6 +51,7 @@ kapt {
 
 dependencies {
     implementation(libs.firebase.crashlytics.buildtools)
+    implementation ("androidx.fragment:fragment-ktx:1.5.7")
     val room_version = "2.6.1"
     implementation("androidx.room:room-runtime:$room_version")
     annotationProcessor("androidx.room:room-compiler:$room_version")
