@@ -765,7 +765,6 @@ class RecipeActivity:AppCompatActivity(), RecipeInsertListener {
             binding.ibRecipePlus.setOnClickListener {
                 showCoffeeRecipeDialog()
             }
-
         }
     }
 }
