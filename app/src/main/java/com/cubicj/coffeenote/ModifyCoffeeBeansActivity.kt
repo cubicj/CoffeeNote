@@ -144,6 +144,7 @@ class ModifyCoffeeBeansActivity : AppCompatActivity() {
         lifecycleScope.launch {
             viewModel.coffeeBean.collect { coffeeBean ->
                 coffeeBean?.let {
+                    selectedImageBytes = it.content
                     binding.ptCustomCoffeeBeans.setText(it.name)
 
                     val spannableString = SpannableStringBuilder()
