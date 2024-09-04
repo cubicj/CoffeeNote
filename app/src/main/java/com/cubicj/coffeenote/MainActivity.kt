@@ -32,7 +32,7 @@ class MainActivity : AppCompatActivity() {
     private var mBinding: ActivityMainBinding? = null
     private var mAlertDialog: AlertDialog? = null
     private var coffeebeansDb: BeansDb? = null
-    lateinit var mAdapter: BeansAdapter
+    lateinit var mAdapter: MainAdapter
     private var coffeebeanscontent: ImageView? = null
     private var selectedImageBytes: ByteArray? = null
     private val viewModel: MainViewModel by viewModels {
@@ -138,7 +138,7 @@ class MainActivity : AppCompatActivity() {
         coffeebeansDb = BeansDb.getInstance(this)
 
 
-        mAdapter = BeansAdapter(this@MainActivity, viewModel, this@MainActivity)
+        mAdapter = MainAdapter(this@MainActivity, viewModel, this@MainActivity)
 
         binding.rvBeans.adapter = mAdapter
         binding.rvBeans.layoutManager = LinearLayoutManager(this@MainActivity, LinearLayoutManager.VERTICAL, false)

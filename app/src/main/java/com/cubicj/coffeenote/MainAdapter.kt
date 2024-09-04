@@ -22,13 +22,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.cubicj.coffeenote.databinding.ListCoffeeBeansBinding
 
 
-class BeansAdapter(
+class MainAdapter(
 
     val context: Context,
     private val viewModel: MainViewModel,
     private val lifecycleOwner: LifecycleOwner
 
-) : RecyclerView.Adapter<BeansAdapter.Holder>() {
+) : RecyclerView.Adapter<MainAdapter.Holder>() {
 
 
     private val differ =
