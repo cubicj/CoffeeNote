@@ -21,7 +21,9 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.cubicj.coffeenote.databinding.ActivityMainBinding
 import kotlinx.coroutines.launch
@@ -145,9 +147,11 @@ class MainActivity : AppCompatActivity() {
         binding.rvBeans.setHasFixedSize(true)
 
 
-        lifecycleScope.launchWhenStarted {
-            viewModel.coffeeBeans.collect { beansList ->
-                mAdapter.updateBeansList(beansList) // CoffeeBeans 리스트로 업데이트
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.coffeeBeans.collect { beansList ->
+                    mAdapter.updateBeansList(beansList)
+                }
             }
         }
         // 커피 원두 추가 팝업
