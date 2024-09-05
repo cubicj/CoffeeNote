@@ -633,15 +633,13 @@ class RecipeActivity:AppCompatActivity(), RecipeInsertListener {
     }
 
     private fun updateRecipeList() {
-        // recipes 갱신 시 UI 업데이트 (RecipeAdapter의 updateRecipes 함수 활용)
         lifecycleScope.launchWhenStarted {
             viewModel.recipes.collect { recipes ->
                 val sortedRecipes = when (currentSortMode) {
                     RecipeSortMode.DATE_DESC -> recipes.sortedByDescending { it.recipe.date }
                     RecipeSortMode.SCORE_DESC -> recipes.sortedByDescending { it.recipe.score.toFloatOrNull() ?: 0f }
                 }
-                // RecipeWithDetails -> Recipe 변환하여 Adapter에 전달
-                mAdapter.updateRecipes(sortedRecipes.map { it.recipe })
+                mAdapter.updateRecipes(sortedRecipes) // RecipeWithDetails 리스트를 직접 전달
             }
         }
     }

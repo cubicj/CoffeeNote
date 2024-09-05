@@ -53,12 +53,13 @@ class RecipeAdapter(
     var currentSortMode = RecipeSortMode.DATE_DESC
     private var radioDeleteAlertDialog: AlertDialog? = null
 
-    private val differ = AsyncListDiffer(this, object : DiffUtil.ItemCallback<Recipe>() {
-        override fun areItemsTheSame(oldItem: Recipe, newItem: Recipe): Boolean {
-            return oldItem.id == newItem.id
+    private val differ = AsyncListDiffer(this, object : DiffUtil.ItemCallback<RecipeWithDetails>() {
+        // RecipeWithDetails로 변경
+        override fun areItemsTheSame(oldItem: RecipeWithDetails, newItem: RecipeWithDetails): Boolean {
+            return oldItem.recipe.id == newItem.recipe.id
         }
 
-        override fun areContentsTheSame(oldItem: Recipe, newItem: Recipe): Boolean {
+        override fun areContentsTheSame(oldItem: RecipeWithDetails, newItem: RecipeWithDetails): Boolean {
             return oldItem == newItem
         }
     })
@@ -68,9 +69,7 @@ class RecipeAdapter(
         context.lifecycleScope.launch {
             context.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.recipes.collect { recipesWithDetails ->
-                    // RecipeWithDetails에서 Recipe만 추출하여 리스트 업데이트
-                    val newRecipes = recipesWithDetails.map { it.recipe }
-                    updateRecipes(newRecipes)
+                    updateRecipes(recipesWithDetails) // RecipeWithDetails 리스트를 직접 전달
                 }
             }
         }
@@ -86,11 +85,11 @@ class RecipeAdapter(
                 val curPos: Int = adapterPosition
                 // recipes 리스트가 비어있지 않은지 확인 후 접근
                 if (curPos in 0 until differ.currentList.size) {
-                    val recipe = differ.currentList[curPos]
+                    val recipeWithDetails = differ.currentList[curPos]
 
                     val intent = Intent(context, RecipeInfoActivity::class.java)
-                    Log.d("RecipeAdapter", "Sending recipeId: ${recipe.id}")
-                    intent.putExtra("selectedRecipe", recipe.id)
+                    Log.d("RecipeAdapter", "Sending recipeId: ${recipeWithDetails.recipe.id}")
+                    intent.putExtra("selectedRecipe", recipeWithDetails.recipe.id)
                     context.startActivity(intent)
                 }
             }
@@ -98,7 +97,7 @@ class RecipeAdapter(
             binding.root.setOnLongClickListener {
                 val curPos: Int = adapterPosition
                 if (curPos in 0 until differ.currentList.size) {
-                    val recipe = differ.currentList[curPos]
+                    val recipeWithDetails = differ.currentList[curPos]
 
                     val recipeinfoAlertDialog: AlertDialog?
 
@@ -140,17 +139,17 @@ class RecipeAdapter(
                         var updatedRelativeTouchY: Float? = null
                         val modifyrecipeBack =
                             dialogView.findViewById<ImageButton>(R.id.ib_custom_recipe_back)
-                        var drinkPerson = recipe.drinkPerson
+                        var drinkPerson = recipeWithDetails.recipe.drinkPerson
                         modifyDrinkPersonButton.text = drinkPerson
 
-                        initialValue = recipe.temp.toIntOrNull() ?: 0
+                        initialValue = recipeWithDetails.recipe.temp.toIntOrNull() ?: 0
 
                         val formatter = DateTimeFormatter.ofPattern("yy-MM-dd", Locale.getDefault())
                             .withZone(ZoneId.systemDefault())
-                        modifyDateButton.text = formatter.format(recipe.date)
-                        modifyTempButton.text = "${recipe.temp}°C"
+                        modifyDateButton.text = formatter.format(recipeWithDetails.recipe.date)
+                        modifyTempButton.text = "${recipeWithDetails.recipe.temp}°C"
                         modifyScoreButton.text =
-                            String.format("%.2f", recipe.score.toFloatOrNull() ?: 0f)
+                            String.format("%.2f", recipeWithDetails.recipe.score.toFloatOrNull() ?: 0f)
 
 
 
@@ -445,8 +444,8 @@ class RecipeAdapter(
                                 scoreInfoSelectView.findViewById<ImageButton>(R.id.ib_score_back)
 
                             // 기존 터치 포인트 설정 (필요한 경우)
-                            val touchPointX = recipe.scoreRelativeX ?: 0.5f
-                            val touchPointY = recipe.scoreRelativeY ?: 0.5f
+                            val touchPointX = recipeWithDetails.recipe.scoreRelativeX ?: 0.5f
+                            val touchPointY = recipeWithDetails.recipe.scoreRelativeY ?: 0.5f
                             localTouchPointView.setTouchPoint(touchPointX, touchPointY)
 
                             confirmButton.setOnClickListener {
@@ -484,19 +483,19 @@ class RecipeAdapter(
 
                         modifyConfirmButton.setOnClickListener {
                             context.lifecycleScope.launch(Dispatchers.IO) {
-                                recipe.date = LocalDate.parse(modifyDateButton.text, formatter)
+                                recipeWithDetails.recipe.date = LocalDate.parse(modifyDateButton.text, formatter)
                                     .atStartOfDay(ZoneId.systemDefault()).toInstant()
-                                recipe.temp = modifyTempButton.text.toString().replace("°C", "")
-                                recipe.score = modifyScoreButton.text.toString()
-                                recipe.scoreRelativeX =
-                                    updatedRelativeTouchX ?: recipe.scoreRelativeX
-                                recipe.scoreRelativeY =
-                                    updatedRelativeTouchY ?: recipe.scoreRelativeY
-                                recipe.drinkPerson = drinkPerson
+                                recipeWithDetails.recipe.temp = modifyTempButton.text.toString().replace("°C", "")
+                                recipeWithDetails.recipe.score = modifyScoreButton.text.toString()
+                                recipeWithDetails.recipe.scoreRelativeX =
+                                    updatedRelativeTouchX ?: recipeWithDetails.recipe.scoreRelativeX
+                                recipeWithDetails.recipe.scoreRelativeY =
+                                    updatedRelativeTouchY ?: recipeWithDetails.recipe.scoreRelativeY
+                                recipeWithDetails.recipe.drinkPerson = drinkPerson
 
                                 Log.d(
                                     "RecipeAdapter",
-                                    "Updating scoreRelativeX: ${recipe.scoreRelativeX}, scoreRelativeY: ${recipe.scoreRelativeY}"
+                                    "Updating scoreRelativeX: ${recipeWithDetails.recipe.scoreRelativeX}, scoreRelativeY: ${recipeWithDetails.recipe.scoreRelativeY}"
                                 )
 
 
@@ -517,7 +516,7 @@ class RecipeAdapter(
 
                     recipedelete?.setOnClickListener {
                         // 삭제할 레시피 가져오기 (differ 사용)
-                        val recipeToDelete = differ.currentList[curPos]
+                        val recipeWithDetailsToDelete = differ.currentList[curPos]
 
                         val deleterecipeInfoSelectView =
                             LayoutInflater.from(context).inflate(R.layout.delete_alert, null)
@@ -535,13 +534,7 @@ class RecipeAdapter(
 
                         deleteconfirm.setOnClickListener {
                             // ViewModel의 deleteRecipe 함수 호출
-                            viewModel.deleteRecipe(
-                                RecipeWithDetails(
-                                    recipe = recipeToDelete,
-                                    handDripDetails = null, // 필요에 따라 수정
-                                    aeropressDetails = null // 필요에 따라 수정
-                                )
-                            )
+                            viewModel.deleteRecipe(recipeWithDetailsToDelete)
 
                             deleterecipeinfoAlertDialog!!.dismiss()
                             recipeinfoAlertDialog.dismiss()
@@ -574,23 +567,36 @@ class RecipeAdapter(
         return differ.currentList.size
     }
 
-    fun updateRecipes(newRecipes: List<Recipe>) {
-        // AsyncListDiffer를 사용하여 변경 사항 계산 및 적용
-        differ.submitList(newRecipes.toList()) // toList()를 추가하여 새로운 리스트를 생성
+    fun updateRecipes(newRecipes: List<RecipeWithDetails>) {  // RecipeWithDetails로 변경
+        differ.submitList(newRecipes.toList())
     }
+
 
 
     inner class Holder(private val binding: ListCoffeeRecipeBinding) : RecyclerView.ViewHolder(binding.root) {
 
         @SuppressLint("SetTextI18n", "DefaultLocale")
-        fun setRecipe(recipe: Recipe) {
+        fun setRecipe(recipeWithDetails: RecipeWithDetails) { // RecipeWithDetails로 변경
+            val recipe = recipeWithDetails.recipe
             val formatter = DateTimeFormatter.ofPattern("yy-MM-dd", Locale.getDefault())
                 .withZone(ZoneId.systemDefault())
             val roundedScore = String.format("%.2f", recipe.score.toFloatOrNull() ?: 0f)
 
-            binding.tvRecipeDate.text = formatter.format(recipe.date) // recipe.date 사용
-            binding.tvRecipeScore.text = roundedScore // roundedScore 사용
+            binding.tvRecipeDate.text = formatter.format(recipe.date)
+            binding.tvRecipeScore.text = roundedScore
             binding.tvDrinkPerson.text = recipe.drinkPerson
+
+            // brewMethod에 따라 상세 정보 UI 업데이트 (예시)
+            when (recipe.brewMethod) {
+                "handdrip" -> {
+                    val details = recipeWithDetails.handDripDetails
+                    // details 정보를 UI에 표시 (예: binding.tvGrinder.text = details?.selectedgrinder)
+                }
+                "aeropress" -> {
+                    val details = recipeWithDetails.aeropressDetails
+                    // details 정보를 UI에 표시
+                }
+            }
         }
     }
 }
