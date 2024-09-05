@@ -588,10 +588,12 @@ class RecipeActivity:AppCompatActivity(), RecipeInsertListener {
                 val itopAlertDialog: AlertDialog?
 
                 val itopSelectView =
-                    LayoutInflater.from(this).inflate(R.layout.dialog_grinder_picker, null)
+                    LayoutInflater.from(this).inflate(R.layout.dialog_itop03_grinder, null)
                 val itopSelectBuilder = AlertDialog.Builder(this).setView(itopSelectView)
                 itopAlertDialog = itopSelectBuilder.create()
                 itopAlertDialog.show()
+
+
             }
 
             "Timemore C3 Esp Pro" -> {
