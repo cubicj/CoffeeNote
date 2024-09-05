@@ -87,7 +87,7 @@ class RecipeActivity:AppCompatActivity(), RecipeInsertListener {
         }
     }
 
-    fun showCoffeeRecipeDialog(){
+    fun showCoffeeRecipeDialog() {
         val brewMethodSelectView = LayoutInflater.from(this).inflate(R.layout.select_method, null)
         val brewMethodSelectBuilder = AlertDialog.Builder(this).setView(brewMethodSelectView)
         val brewMethodAlertDialog = brewMethodSelectBuilder.create()
@@ -250,7 +250,8 @@ class RecipeActivity:AppCompatActivity(), RecipeInsertListener {
             val fellowOdd2Button = grinderSelectView.findViewById<Button>(R.id.btn_fellow_odd2)
             val itop03Button = grinderSelectView.findViewById<Button>(R.id.btn_itop_03)
             val timemoreC3Button = grinderSelectView.findViewById<Button>(R.id.btn_timemore_c3)
-            val selectgrinderback = grinderSelectView.findViewById<ImageButton>(R.id.ib_select_grinder_back)
+            val selectgrinderback =
+                grinderSelectView.findViewById<ImageButton>(R.id.ib_select_grinder_back)
 
             fellowOdd2Button.setOnClickListener {
                 showGrinderSettingDialog("Fellow Odd 2")
@@ -323,6 +324,7 @@ class RecipeActivity:AppCompatActivity(), RecipeInsertListener {
                         true
                     }
                 }
+
                 override fun onChildViewRemoved(p0: View?, p1: View?) {
                 }
             })
@@ -503,7 +505,7 @@ class RecipeActivity:AppCompatActivity(), RecipeInsertListener {
         }
     }
 
-    private fun showAeroInputDialog(){
+    private fun showAeroInputDialog() {
 
     }
 
@@ -513,7 +515,8 @@ class RecipeActivity:AppCompatActivity(), RecipeInsertListener {
             "Fellow Odd 2" -> {
                 val oddAlertDialog: AlertDialog?
 
-                val oddSelectView = LayoutInflater.from(this).inflate(R.layout.dialog_grinder_picker, null)
+                val oddSelectView =
+                    LayoutInflater.from(this).inflate(R.layout.dialog_grinder_picker, null)
                 val oddSelectBuilder = AlertDialog.Builder(this).setView(oddSelectView)
                 oddAlertDialog = oddSelectBuilder.create()
                 oddAlertDialog.show()
@@ -531,32 +534,39 @@ class RecipeActivity:AppCompatActivity(), RecipeInsertListener {
                 grinderValue.text = "${initialGroup}-${initialStep}"
                 seekBar.progress = initialGroup * 3 + initialStep - 1
 
-                seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener{
+                seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
                     override fun onProgressChanged(
                         seekBar: SeekBar?,
                         progress: Int,
                         fromUser: Boolean
                     ) {
-                        val  grind = progress + 1
+                        val grind = progress + 1
                         val group = (grind + 2) / 3
                         val step = (grind + 2) % 3
                         val grindValueText = "${group}-${step}"
                         grinderValue.text = grindValueText
 
                         if (fromUser) {
-                            vibrator.vibrate(VibrationEffect.createOneShot(50, VibrationEffect.DEFAULT_AMPLITUDE))
+                            vibrator.vibrate(
+                                VibrationEffect.createOneShot(
+                                    50,
+                                    VibrationEffect.DEFAULT_AMPLITUDE
+                                )
+                            )
                         }
                     }
 
                     override fun onStartTrackingTouch(seekBar: SeekBar?) {
                     }
+
                     override fun onStopTrackingTouch(seekBar: SeekBar?) {
                     }
 
                 })
 
                 oddConfirm.setOnClickListener {
-                    val grinderString = "${(seekBar.progress + 3) / 3}-${(seekBar.progress + 3) % 3}"
+                    val grinderString =
+                        "${(seekBar.progress + 3) / 3}-${(seekBar.progress + 3) % 3}"
 
                     // 선택된 그라인더 및 분쇄도 정보 저장
                     tempselectedgrinder = "Fellow Ode 2"
@@ -573,18 +583,22 @@ class RecipeActivity:AppCompatActivity(), RecipeInsertListener {
                     oddAlertDialog.dismiss()
                 }
             }
+
             "ITOP 03" -> {
                 val itopAlertDialog: AlertDialog?
 
-                val itopSelectView = LayoutInflater.from(this).inflate(R.layout.dialog_grinder_picker, null)
+                val itopSelectView =
+                    LayoutInflater.from(this).inflate(R.layout.dialog_grinder_picker, null)
                 val itopSelectBuilder = AlertDialog.Builder(this).setView(itopSelectView)
                 itopAlertDialog = itopSelectBuilder.create()
                 itopAlertDialog.show()
             }
+
             "Timemore C3 Esp Pro" -> {
                 val timemoreAlertDialog: AlertDialog?
 
-                val timemoreSelectView = LayoutInflater.from(this).inflate(R.layout.dialog_grinder_picker, null)
+                val timemoreSelectView =
+                    LayoutInflater.from(this).inflate(R.layout.dialog_grinder_picker, null)
                 val timemoreSelectBuilder = AlertDialog.Builder(this).setView(timemoreSelectView)
                 timemoreAlertDialog = timemoreSelectBuilder.create()
                 timemoreAlertDialog.show()
@@ -637,7 +651,9 @@ class RecipeActivity:AppCompatActivity(), RecipeInsertListener {
             viewModel.recipes.collect { recipes ->
                 val sortedRecipes = when (currentSortMode) {
                     RecipeSortMode.DATE_DESC -> recipes.sortedByDescending { it.recipe.date }
-                    RecipeSortMode.SCORE_DESC -> recipes.sortedByDescending { it.recipe.score.toFloatOrNull() ?: 0f }
+                    RecipeSortMode.SCORE_DESC -> recipes.sortedByDescending {
+                        it.recipe.score.toFloatOrNull() ?: 0f
+                    }
                 }
                 mAdapter.updateRecipes(sortedRecipes) // RecipeWithDetails 리스트를 직접 전달
             }
@@ -670,99 +686,108 @@ class RecipeActivity:AppCompatActivity(), RecipeInsertListener {
                 val newGroup = DrinkPersonGroup(groupNames = listOf("나"))
                 coffeebeansDb?.drinkPersonGroupDao()?.insert(newGroup)
             }
+        }
 
-            withContext(Dispatchers.Main) {
-                mAdapter = RecipeAdapter(this@RecipeActivity, viewModel)
-                binding.rvRecipe.adapter = mAdapter
-                binding.rvRecipe.layoutManager =
-                    LinearLayoutManager(this@RecipeActivity, LinearLayoutManager.VERTICAL, false)
-                binding.rvRecipe.setHasFixedSize(true)
-
-                updateRecipeList()
-
-                lifecycleScope.launch {
-                    repeatOnLifecycle(Lifecycle.State.STARTED) {
-                        viewModel.drinkPersonGroups.collect { drinkPersonGroups ->
-                            withContext(Dispatchers.Main) {
-                                // BottomSheetDialog가 표시될 때만 라디오 버튼 설정
-                                if (bottomSheetDialog?.isShowing == true) {
-                                    val selectDrinkGroup =
-                                        bottomSheetView.findViewById<RadioGroup>(R.id.rdg_select_person)
-                                    setupBottomSheetRadioButtons(selectDrinkGroup, drinkPersonGroups)
-                                }
-
-                                // drinkAlertDialog가 표시될 때만 라디오 버튼 설정
-                                if (drinkAlertDialog?.isShowing == true) {
-                                    val drinkPersonGroup =
-                                        drinkAlertDialog?.findViewById<RadioGroup>(R.id.rdg_drink_person)
-                                    setupBottomSheetRadioButtons(drinkPersonGroup!!, drinkPersonGroups)
-                                }
-                            }
-                        }
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.recipes.collect { recipes ->
+                    // 어댑터 설정 및 레시피 리스트 업데이트 (처음 한 번만 실행)
+                    if (!::mAdapter.isInitialized) {
+                        mAdapter = RecipeAdapter(this@RecipeActivity, viewModel)
+                        binding.rvRecipe.adapter = mAdapter
+                        binding.rvRecipe.layoutManager = LinearLayoutManager(
+                            this@RecipeActivity,
+                            LinearLayoutManager.VERTICAL,
+                            false
+                        )
+                        binding.rvRecipe.setHasFixedSize(true)
                     }
+                    mAdapter.updateRecipes(recipes)
                 }
             }
-            binding.btnOrderDate.setOnClickListener {
-                currentSortMode = RecipeSortMode.DATE_DESC
-                updateRecipeList() // 정렬 방식 변경 후 레시피 목록 업데이트
-                binding.btnOrderDate.setBackgroundColor(Color.RED)
-                binding.btnOrderScore.setBackgroundColor(Color.GRAY)
-            }
+        }
 
-            binding.btnOrderScore.setOnClickListener {
-                currentSortMode = RecipeSortMode.SCORE_DESC
-                updateRecipeList() // 정렬 방식 변경 후 레시피 목록 업데이트
-                binding.btnOrderDate.setBackgroundColor(Color.GRAY)
-                binding.btnOrderScore.setBackgroundColor(Color.RED)
-            }
-            binding.btnOrderDrinkPerson.setOnClickListener {
-                lifecycleScope.launch {
-                    withContext(Dispatchers.Main) {
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.drinkPersonGroups.collect { drinkPersonGroups ->
+                    // BottomSheetDialog 및 drinkAlertDialog 관련 설정
+                    if (bottomSheetDialog?.isShowing == true) {
                         val selectDrinkGroup =
                             bottomSheetView.findViewById<RadioGroup>(R.id.rdg_select_person)
-                        val selectDrinkConfirm =
-                            bottomSheetView.findViewById<Button>(R.id.btn_select_person_confirm)
-                        val selectDrinkCancel =
-                            bottomSheetView.findViewById<Button>(R.id.btn_select_person_cancel)
+                        setupBottomSheetRadioButtons(selectDrinkGroup, drinkPersonGroups)
+                    }
 
-                        val currentDrinkPersonGroups = viewModel.drinkPersonGroups.value ?: emptyList()
-                        setupBottomSheetRadioButtons(selectDrinkGroup, currentDrinkPersonGroups)
-
-                        // 확인 버튼 클릭 이벤트 처리
-                        selectDrinkConfirm.setOnClickListener {
-                            val selectedRadioButtonId = selectDrinkGroup.checkedRadioButtonId
-                            val selectedText = if (selectedRadioButtonId != -1) {
-                                bottomSheetView.findViewById<RadioButton>(selectedRadioButtonId).text.toString()
-                            } else {
-                                "" // 아무것도 선택하지 않은 경우
-                            }
-
-                            binding.btnOrderDrinkPerson.text = selectedText
-                            bottomSheetDialog?.dismiss()
-
-                            // 선택된 마신 사람에 따라 레시피 필터링
-                            lifecycleScope.launchWhenStarted {
-                                viewModel.filterRecipesByDrinkPerson(selectedBeanId, selectedText).collect { filteredRecipesWithDetails ->
-                                    mAdapter.updateRecipes(filteredRecipesWithDetails) // 변환 없이 바로 전달
-                                }
-                            }
-                        }
-
-                        // 취소 버튼 클릭 이벤트 처리
-                        selectDrinkCancel.setOnClickListener {
-                            bottomSheetDialog?.dismiss()
-                        }
+                    if (drinkAlertDialog?.isShowing == true) {
+                        val drinkPersonGroup =
+                            drinkAlertDialog?.findViewById<RadioGroup>(R.id.rdg_drink_person)
+                        setupBottomSheetRadioButtons(drinkPersonGroup!!, drinkPersonGroups)
                     }
                 }
-                bottomSheetDialog?.show()
             }
+        }
 
-            binding.btnRecipeBack.setOnClickListener {
-                finish()
+        binding.btnOrderDate.setOnClickListener {
+            currentSortMode = RecipeSortMode.DATE_DESC
+            updateRecipeList() // 정렬 방식 변경 후 레시피 목록 업데이트
+            binding.btnOrderDate.setBackgroundColor(Color.RED)
+            binding.btnOrderScore.setBackgroundColor(Color.GRAY)
+        }
+
+        binding.btnOrderScore.setOnClickListener {
+            currentSortMode = RecipeSortMode.SCORE_DESC
+            updateRecipeList() // 정렬 방식 변경 후 레시피 목록 업데이트
+            binding.btnOrderDate.setBackgroundColor(Color.GRAY)
+            binding.btnOrderScore.setBackgroundColor(Color.RED)
+        }
+        binding.btnOrderDrinkPerson.setOnClickListener {
+            lifecycleScope.launch {
+                withContext(Dispatchers.Main) {
+                    val selectDrinkGroup =
+                        bottomSheetView.findViewById<RadioGroup>(R.id.rdg_select_person)
+                    val selectDrinkConfirm =
+                        bottomSheetView.findViewById<Button>(R.id.btn_select_person_confirm)
+                    val selectDrinkCancel =
+                        bottomSheetView.findViewById<Button>(R.id.btn_select_person_cancel)
+
+                    val currentDrinkPersonGroups = viewModel.drinkPersonGroups.value ?: emptyList()
+                    setupBottomSheetRadioButtons(selectDrinkGroup, currentDrinkPersonGroups)
+
+                    // 확인 버튼 클릭 이벤트 처리
+                    selectDrinkConfirm.setOnClickListener {
+                        val selectedRadioButtonId = selectDrinkGroup.checkedRadioButtonId
+                        val selectedText = if (selectedRadioButtonId != -1) {
+                            bottomSheetView.findViewById<RadioButton>(selectedRadioButtonId).text.toString()
+                        } else {
+                            "" // 아무것도 선택하지 않은 경우
+                        }
+
+                        binding.btnOrderDrinkPerson.text = selectedText
+                        bottomSheetDialog?.dismiss()
+
+                        // 선택된 마신 사람에 따라 레시피 필터링
+                        lifecycleScope.launchWhenStarted {
+                            viewModel.filterRecipesByDrinkPerson(selectedBeanId, selectedText)
+                                .collect { filteredRecipesWithDetails ->
+                                    mAdapter.updateRecipes(filteredRecipesWithDetails) // 변환 없이 바로 전달
+                                }
+                        }
+                    }
+
+                    // 취소 버튼 클릭 이벤트 처리
+                    selectDrinkCancel.setOnClickListener {
+                        bottomSheetDialog?.dismiss()
+                    }
+                }
             }
-            binding.ibRecipePlus.setOnClickListener {
-                showCoffeeRecipeDialog()
-            }
+            bottomSheetDialog?.show()
+        }
+
+        binding.btnRecipeBack.setOnClickListener {
+            finish()
+        }
+        binding.ibRecipePlus.setOnClickListener {
+            showCoffeeRecipeDialog()
         }
     }
 }
+

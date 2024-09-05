@@ -31,7 +31,13 @@ class RecipeViewModel(
 
     init {
         viewModelScope.launch {
-            _drinkPersonGroups.value = drinkPersonGroupDao.getAll()
+            _drinkPersonGroups.value = withContext(Dispatchers.IO) { // 백그라운드 스레드에서 실행
+                drinkPersonGroupDao.getAll()
+            }
+            _recipes.value = withContext(Dispatchers.IO) {  // 백그라운드 스레드에서 실행
+                recipeDao.getRecipesWithDetailsByBeanId(selectedBeanId)
+                    .sortedByDescending { it.recipe.date }
+            }
         }
     }
 
@@ -69,6 +75,7 @@ class RecipeViewModel(
                 aeropressDetails = if (recipe.brewMethod == "aeropress") aeropressDetails else null
             )
             _recipes.value = recipeDao.getRecipesWithDetailsByBeanId(selectedBeanId)
+                .sortedByDescending { it.recipe.date }
         }
     }
 
