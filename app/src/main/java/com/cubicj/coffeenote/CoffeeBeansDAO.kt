@@ -85,6 +85,10 @@ interface RecipeDao {
         WHERE recipes.id = :recipeId
     """)
     fun getRecipeWithDetailsById(recipeId: Long): RecipeWithDetails?
+
+    @Transaction
+    @Query("SELECT * FROM recipes WHERE beanId = :beanId")
+    fun getRecipesWithDetailsByBeanId(beanId: Long): List<RecipeWithDetails>
 }
 
 @Dao

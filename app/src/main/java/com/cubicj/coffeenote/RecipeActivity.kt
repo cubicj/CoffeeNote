@@ -76,8 +76,8 @@ class RecipeActivity:AppCompatActivity(), RecipeInsertListener {
     }
 
 
-    override fun onRecipeInserted(recipe: Recipe) {
-        // ViewModel을 통해 레시피 추가 후 자동으로 목록 갱신되도록 수정
+    override fun onRecipeInserted(recipeWithDetails: RecipeWithDetails) {
+        // RecipeWithDetails로 변경
         lifecycleScope.launch(Dispatchers.Main) {
             Toast.makeText(applicationContext, "입력되었습니다.", Toast.LENGTH_SHORT).show()
             mAlertDialog!!.dismiss()
@@ -742,8 +742,8 @@ class RecipeActivity:AppCompatActivity(), RecipeInsertListener {
 
                             // 선택된 마신 사람에 따라 레시피 필터링
                             lifecycleScope.launchWhenStarted {
-                                viewModel.filterRecipesByDrinkPerson(selectedBeanId, selectedText).collect { filteredRecipes ->
-                                // 필터링된 레시피 목록 업데이트
+                                viewModel.filterRecipesByDrinkPerson(selectedBeanId, selectedText).collect { filteredRecipesWithDetails ->
+                                    mAdapter.updateRecipes(filteredRecipesWithDetails) // 변환 없이 바로 전달
                                 }
                             }
                         }

@@ -68,7 +68,7 @@ class RecipeViewModel(
                 handDripDetails = if (recipe.brewMethod == "handdrip") handDripDetails else null,
                 aeropressDetails = if (recipe.brewMethod == "aeropress") aeropressDetails else null
             )
-            _recipes.value = _recipes.value + newRecipeWithDetails
+            _recipes.value = recipeDao.getRecipesWithDetailsByBeanId(selectedBeanId)
         }
     }
 
@@ -93,6 +93,7 @@ class RecipeViewModel(
                     it
                 }
             }
+            _recipes.value = recipeDao.getRecipesWithDetailsByBeanId(selectedBeanId)
         }
     }
 
@@ -105,8 +106,7 @@ class RecipeViewModel(
                 "handdrip" -> recipeWithDetails.handDripDetails?.let { recipeDao.deleteHandDripRecipeDetails(it) }
                 "aeropress" -> recipeWithDetails.aeropressDetails?.let { recipeDao.deleteAeropressRecipeDetails(it) }
             }
-
-            _recipes.value = _recipes.value.filter { it.recipe.id != recipeWithDetails.recipe.id }
+            _recipes.value = recipeDao.getRecipesWithDetailsByBeanId(selectedBeanId)
         }
     }
 
@@ -117,18 +117,17 @@ class RecipeViewModel(
         }
 
     // 마신 사람별 레시피 필터링
-    fun filterRecipesByDrinkPerson(beanId: Long, drinkPerson: String): Flow<List<Recipe>> {
+    fun filterRecipesByDrinkPerson(beanId: Long, drinkPerson: String): Flow<List<RecipeWithDetails>> {
         return flow {
-            val recipes = recipeDao.getRecipesByBeanId(beanId)
-            val filteredRecipes = if (drinkPerson == "전체") {
-                recipes
+            val filteredRecipesWithDetails = if (drinkPerson == "전체") {
+                recipeDao.getRecipesWithDetailsByBeanId(beanId)
             } else {
-                recipes.filter { it.drinkPerson == drinkPerson }
+                recipeDao.getRecipesWithDetailsByBeanId(beanId)
+                    .filter { it.recipe.drinkPerson == drinkPerson }
             }
-            emit(filteredRecipes)
+            emit(filteredRecipesWithDetails)
         }.flowOn(Dispatchers.IO)
     }
-
     // 마신 사람 그룹 데이터베이스 업데이트
     fun updateDrinkPersonGroupInDb(newPersonName: String) {
         viewModelScope.launch(Dispatchers.IO) {
