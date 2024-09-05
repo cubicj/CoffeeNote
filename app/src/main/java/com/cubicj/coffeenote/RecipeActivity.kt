@@ -681,7 +681,6 @@ class RecipeActivity:AppCompatActivity(), RecipeInsertListener {
         }
     }
 
-
     override fun onDestroy() {
         super.onDestroy()
         // 액티비티가 종료될 때 다이얼로그를 닫아줍니다.
