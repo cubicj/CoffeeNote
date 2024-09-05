@@ -509,7 +509,7 @@ class RecipeActivity:AppCompatActivity(), RecipeInsertListener {
 
     }
 
-    @SuppressLint("MissingInflatedId", "SetTextI18n")
+    @SuppressLint("MissingInflatedId", "SetTextI18n", "DefaultLocale")
     private fun showGrinderSettingDialog(selectedGrinder: String) {
         when (selectedGrinder) {
             "Fellow Odd 2" -> {
@@ -574,7 +574,7 @@ class RecipeActivity:AppCompatActivity(), RecipeInsertListener {
 
                     oddAlertDialog.dismiss()
                     grinderAlertDialog?.dismiss()
-                    coffeerecipegrinder?.text = "$tempselectedgrinder : $tempgrindervalue"
+                    coffeerecipegrinder?.text = "$tempselectedgrinder : [ $tempgrindervalue ]"
                 }
                 oddCancel.setOnClickListener {
                     oddAlertDialog.dismiss()
@@ -593,7 +593,53 @@ class RecipeActivity:AppCompatActivity(), RecipeInsertListener {
                 itopAlertDialog = itopSelectBuilder.create()
                 itopAlertDialog.show()
 
+                val itopBack = itopSelectView.findViewById<ImageButton>(R.id.ib_itop_back)
+                val itopTensDigitPicker = itopSelectView.findViewById<NumberPicker>(R.id.np_itop_tens_digit)
+                val itopOnesDigitPicker = itopSelectView.findViewById<NumberPicker>(R.id.np_itop_ones_digit)
+                val itopTenthsDigitPicker = itopSelectView.findViewById<NumberPicker>(R.id.np_itop_tenths_digit)
+                val itopConfirm = itopSelectView.findViewById<Button>(R.id.btn_itop_confirm)
+                val itopCancel = itopSelectView.findViewById<Button>(R.id.btn_itop_cancel)
 
+                itopTensDigitPicker?.minValue = 0
+                itopTensDigitPicker?.maxValue = 9
+
+                itopOnesDigitPicker?.minValue = 0
+                itopOnesDigitPicker?.maxValue = 9
+
+                itopTenthsDigitPicker?.minValue = 0
+                itopTenthsDigitPicker?.maxValue = 9
+
+                val numberPickers = listOf(itopTensDigitPicker, itopOnesDigitPicker, itopTenthsDigitPicker)
+                numberPickers.forEach { picker ->
+                    picker?.isHapticFeedbackEnabled = true
+                    picker?.setOnValueChangedListener { _, _, _ ->
+                        vibrator.vibrate(VibrationEffect.createOneShot(50, VibrationEffect.DEFAULT_AMPLITUDE))
+                    }
+                }
+
+                itopConfirm.setOnClickListener {
+                    val tensDigit = itopTensDigitPicker?.value ?: 0
+                    val onesDigit = itopOnesDigitPicker?.value ?: 0
+                    val tenthsDigit = itopTenthsDigitPicker?.value ?: 0
+
+                    val grinderString = String.format("%02d.%d", tensDigit * 10 + onesDigit, tenthsDigit)
+
+                    // 선택된 그라인더 및 분쇄도 정보 저장
+                    tempselectedgrinder = "ITOP 03"
+                    tempgrindervalue = grinderString
+
+                    itopAlertDialog.dismiss()
+                    grinderAlertDialog?.dismiss()
+                    coffeerecipegrinder?.text = "$tempselectedgrinder : [ $tempgrindervalue ]"
+                }
+
+                itopBack.setOnClickListener {
+                    itopAlertDialog.dismiss()
+                }
+
+                itopCancel.setOnClickListener {
+                    itopAlertDialog.dismiss()
+                }
             }
 
             "Timemore C3 Esp Pro" -> {
