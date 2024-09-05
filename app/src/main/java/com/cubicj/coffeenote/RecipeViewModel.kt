@@ -43,22 +43,30 @@ class RecipeViewModel(
         }
     }
 
-    // 새로운 레시피 추가 - HandDripRecipeDetails 처리 추가
-    fun insertRecipe(recipe: Recipe, handDripDetails: HandDripRecipeDetails? = null) {
+    fun insertRecipe(recipe: Recipe, handDripDetails: HandDripRecipeDetails? = null, aeropressDetails: AeropressRecipeDetails? = null) {
         viewModelScope.launch(Dispatchers.IO) {
-            val insertedRecipeId = recipeDao.insert(recipe) // Recipe 먼저 삽입하여 id 생성
+            val insertedRecipeId = recipeDao.insert(recipe)
             recipe.id = insertedRecipeId
 
-            handDripDetails?.let {
-                it.recipeId = insertedRecipeId // 생성된 recipeId 설정
-                recipeDao.insertHandDripRecipeDetails(it)
+            when (recipe.brewMethod) {
+                "handdrip" -> {
+                    handDripDetails?.let {
+                        it.recipeId = insertedRecipeId
+                        recipeDao.insertHandDripRecipeDetails(it)
+                    }
+                }
+                "aeropress" -> {
+                    aeropressDetails?.let {
+                        it.recipeId = insertedRecipeId
+                        recipeDao.insertAeropressRecipeDetails(it)
+                    }
+                }
             }
 
-            // RecipeWithDetails 객체 생성 및 리스트 업데이트 (handDripDetails만 사용)
             val newRecipeWithDetails = RecipeWithDetails(
                 recipe = recipe,
-                handDripDetails = handDripDetails,
-                aeropressDetails = null
+                handDripDetails = if (recipe.brewMethod == "handdrip") handDripDetails else null,
+                aeropressDetails = if (recipe.brewMethod == "aeropress") aeropressDetails else null
             )
             _recipes.value = _recipes.value + newRecipeWithDetails
         }
