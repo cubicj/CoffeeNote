@@ -46,6 +46,59 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
+        <TextView
+            android:id="@+id/textViewRotation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:text="회전 수:"
+            android:textSize="18sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Spinner
+            android:id="@+id/spinnerRotation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            app:layout_constraintBottom_toBottomOf="@+id/textViewRotation"
+            app:layout_constraintStart_toEndOf="@+id/textViewRotation"
+            app:layout_constraintTop_toTopOf="@+id/textViewRotation" />
+
+        <TextView
+            android:id="@+id/textViewStep"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="단계:"
+            android:textSize="18sp"
+            app:layout_constraintStart_toStartOf="@+id/textViewRotation"
+            app:layout_constraintTop_toBottomOf="@+id/textViewRotation" />
+
+        <SeekBar
+            android:id="@+id/seekBarStep"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:max="29"
+            app:layout_constraintBottom_toBottomOf="@+id/textViewStep"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/textViewStep"
+            app:layout_constraintTop_toTopOf="@+id/textViewStep" />
+
+        <TextView
+            android:id="@+id/textViewStepValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="1"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="@+id/seekBarStep"
+            app:layout_constraintStart_toStartOf="@+id/seekBarStep"
+            app:layout_constraintTop_toBottomOf="@+id/seekBarStep" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
