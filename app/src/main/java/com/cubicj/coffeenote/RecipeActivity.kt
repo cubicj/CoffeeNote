@@ -10,7 +10,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.CalendarView
 import android.widget.EditText
@@ -20,7 +19,6 @@ import android.widget.NumberPicker
 import android.widget.RadioButton
 import android.widget.RadioGroup
 import android.widget.SeekBar
-import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
@@ -648,60 +646,10 @@ class RecipeActivity:AppCompatActivity(), RecipeInsertListener {
                 val timemoreAlertDialog: AlertDialog?
 
                 val timemoreSelectView =
-                    LayoutInflater.from(this).inflate(R.layout.dialog_timemore_grinder, null)
+                    LayoutInflater.from(this).inflate(R.layout.dialog_grinder_picker, null)
                 val timemoreSelectBuilder = AlertDialog.Builder(this).setView(timemoreSelectView)
                 timemoreAlertDialog = timemoreSelectBuilder.create()
                 timemoreAlertDialog.show()
-
-                val timemoreBack = timemoreSelectView.findViewById<ImageButton>(R.id.imageButton)
-                val rotationSpinner = timemoreSelectView.findViewById<Spinner>(R.id.spinnerRotation)
-                val stepSeekBar = timemoreSelectView.findViewById<SeekBar>(R.id.seekBarStep)
-                val stepValueTextView = timemoreSelectView.findViewById<TextView>(R.id.textViewStepValue)
-                val timemoreConfirm = timemoreSelectView.findViewById<Button>(R.id.button2)
-                val timemoreCancel = timemoreSelectView.findViewById<Button>(R.id.button)
-
-                // 회전 수 스피너 설정
-                val rotations = listOf(0, 1, 2, 3)
-                val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, rotations)
-                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-                rotationSpinner.adapter = adapter
-
-                // SeekBar 설정
-                stepSeekBar.max = 29
-                stepSeekBar.progress = 0 // 초기값을 0으로 설정
-                stepValueTextView.text = "0" // 초기 텍스트 값도 0으로 설정
-                stepSeekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
-                    override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-                        stepValueTextView.text = progress.toString()
-                        if (fromUser) {
-                            vibrator.vibrate(VibrationEffect.createOneShot(50, VibrationEffect.DEFAULT_AMPLITUDE))
-                        }
-                    }
-
-                    override fun onStartTrackingTouch(seekBar: SeekBar?) {}
-                    override fun onStopTrackingTouch(seekBar: SeekBar?) {}
-                })
-
-                timemoreConfirm.setOnClickListener {
-                    val rotation = rotationSpinner.selectedItem.toString()
-                    val step = stepValueTextView.text.toString()
-                    val grinderString = "$rotation-$step"
-
-                    tempselectedgrinder = "Timemore C3 Esp Pro"
-                    tempgrindervalue = grinderString
-        
-                    timemoreAlertDialog.dismiss()
-                    grinderAlertDialog?.dismiss()
-                    coffeerecipegrinder?.text = "$tempselectedgrinder : [ $tempgrindervalue ]"
-                }
-
-                timemoreBack.setOnClickListener {
-                    timemoreAlertDialog.dismiss()
-                }
-
-                timemoreCancel.setOnClickListener {
-                    timemoreAlertDialog.dismiss()
-                }
             }
         }
     }
