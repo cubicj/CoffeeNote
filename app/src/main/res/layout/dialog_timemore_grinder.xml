@@ -59,9 +59,12 @@
 
         <Spinner
             android:id="@+id/spinnerRotation"
-            android:layout_width="wrap_content"
+            android:layout_width="120dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
+            android:textSize="18sp"
+            android:spinnerMode="dropdown"
+            android:popupBackground="@android:color/white"
             app:layout_constraintBottom_toBottomOf="@+id/textViewRotation"
             app:layout_constraintStart_toEndOf="@+id/textViewRotation"
             app:layout_constraintTop_toTopOf="@+id/textViewRotation" />

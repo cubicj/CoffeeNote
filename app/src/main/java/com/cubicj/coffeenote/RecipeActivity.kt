@@ -689,7 +689,7 @@ class RecipeActivity:AppCompatActivity(), RecipeInsertListener {
 
                     tempselectedgrinder = "Timemore C3 Esp Pro"
                     tempgrindervalue = grinderString
-
+        
                     timemoreAlertDialog.dismiss()
                     grinderAlertDialog?.dismiss()
                     coffeerecipegrinder?.text = "$tempselectedgrinder : [ $tempgrindervalue ]"
