@@ -56,7 +56,6 @@
             android:textSize="18sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-
         <Spinner
             android:id="@+id/spinnerRotation"
             android:layout_width="120dp"
@@ -64,7 +63,8 @@
             android:layout_marginStart="16dp"
             android:textSize="18sp"
             android:spinnerMode="dropdown"
-            android:popupBackground="@android:color/white"
+            android:popupBackground="@android:color/black"
+            android:textColor="@android:color/white"
             app:layout_constraintBottom_toBottomOf="@+id/textViewRotation"
             app:layout_constraintStart_toEndOf="@+id/textViewRotation"
             app:layout_constraintTop_toTopOf="@+id/textViewRotation" />
