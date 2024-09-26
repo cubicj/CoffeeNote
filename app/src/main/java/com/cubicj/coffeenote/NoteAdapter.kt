@@ -115,20 +115,15 @@ class NoteAdapter(
 
     override fun onBindViewHolder(holder: Holder, position: Int) {
         val note = differ.currentList[position]
-
-        holder.binding.root.setOnClickListener {
-            val currentPosition = holder.adapterPosition
-            if (currentPosition != RecyclerView.NO_POSITION) {
-                val clickedNote = differ.currentList[currentPosition]
-                val newIsChecked = !clickedNote.isChecked
-                viewModel.updateSelectedNoteNames(clickedNote.notename, newIsChecked)
-            }
-        }
-
-        holder.binding.cbNoteList.isClickable = false
-
+        
         // 뷰 홀더에 데이터 바인딩
         holder.bind(note)
+        
+        // 클릭 리스너를 여기로 이동
+        holder.binding.root.setOnClickListener {
+            val newIsChecked = !note.isChecked
+            viewModel.updateSelectedNoteNames(note.notename, newIsChecked)
+        }
     }
 
     override fun getItemCount(): Int {
@@ -162,15 +157,11 @@ class NoteAdapter(
                     }
             }
 
-            binding.cbNoteList.setOnCheckedChangeListener { _, isChecked ->
-                // _allNotes 직접 업데이트
-                val updatedNotes = differ.currentList.toMutableList().also {
-                    if (adapterPosition != RecyclerView.NO_POSITION) { // adapterPosition 사용
-                        it[adapterPosition] = it[adapterPosition].copy(isChecked = isChecked)
-                    }
-                }
-                viewModel._allNotes.value = updatedNotes
-                viewModel.updateSelectedNoteNames(note.notename, isChecked)
+            binding.cbNoteList.setOnCheckedChangeListener(null)
+
+            binding.cbNoteList.setOnClickListener {
+                val newIsChecked = !note.isChecked
+                viewModel.updateSelectedNoteNames(note.notename, newIsChecked)
             }
         }
     }
