@@ -661,13 +661,15 @@ class RecipeActivity:AppCompatActivity(), RecipeInsertListener {
                 val timemoreCancel = timemoreSelectView.findViewById<Button>(R.id.button)
 
                 // 회전 수 스피너 설정
-                val rotations = (0..10).toList()
+                val rotations = listOf(0, 1, 2, 3)
                 val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, rotations)
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
                 rotationSpinner.adapter = adapter
 
                 // SeekBar 설정
                 stepSeekBar.max = 29
+                stepSeekBar.progress = 0 // 초기값을 0으로 설정
+                stepValueTextView.text = "0" // 초기 텍스트 값도 0으로 설정
                 stepSeekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
                     override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
                         stepValueTextView.text = progress.toString()
