@@ -10,7 +10,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.CalendarView
 import android.widget.EditText
@@ -20,7 +19,6 @@ import android.widget.NumberPicker
 import android.widget.RadioButton
 import android.widget.RadioGroup
 import android.widget.SeekBar
-import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
@@ -137,7 +135,6 @@ class RecipeActivity:AppCompatActivity(), RecipeInsertListener {
         val iv_recipe_hotorice = mRecipeSelectView.findViewById<ImageView>(R.id.iv_recipe_hotorice)
         val coffeerecipeBack =
             mRecipeSelectView.findViewById<ImageButton>(R.id.ib_custom_recipe_back)
-        var selectedIconTemp = true
         selectDrinkPerson = mRecipeSelectView?.findViewById(R.id.btn_drink_person)
         drinkPerson = "나"
         selectDrinkPerson?.text = drinkPerson
@@ -150,6 +147,20 @@ class RecipeActivity:AppCompatActivity(), RecipeInsertListener {
         coffeerecipegrinder?.text = "" // 버튼 텍스트 초기값 설정
         coffeerecipescore?.text = String.format("%.2f", roundedScore)
 
+        var isHot = true // 기본값은 hot으로 설정
+
+        coffeerecipeiconTemp?.setOnCheckedChangeListener { group, checkedId ->
+            when (checkedId) {
+                R.id.rbtn_coffee_recipe_hot -> {
+                    iv_recipe_hotorice?.setImageResource(R.drawable.hot)
+                    isHot = true
+                }
+                R.id.rbtn_coffee_recipe_ice -> {
+                    iv_recipe_hotorice?.setImageResource(R.drawable.ice)
+                    isHot = false
+                }
+            }
+        }
 
         coffeeRecipeDate?.setOnClickListener {
             val dateSelectView =
@@ -225,21 +236,6 @@ class RecipeActivity:AppCompatActivity(), RecipeInsertListener {
             }
             backButton?.setOnClickListener {
                 tempAlertDialog?.dismiss()
-            }
-        }
-
-
-        coffeerecipeiconTemp?.setOnCheckedChangeListener { group, checkedId ->
-            when (checkedId) {
-                R.id.rbtn_coffee_recipe_hot -> {
-                    iv_recipe_hotorice?.setImageResource(R.drawable.hot)
-                    selectedIconTemp = true
-                }
-
-                R.id.rbtn_coffee_recipe_ice -> {
-                    iv_recipe_hotorice?.setImageResource(R.drawable.ice)
-                    selectedIconTemp = false
-                }
             }
         }
 
@@ -473,7 +469,8 @@ class RecipeActivity:AppCompatActivity(), RecipeInsertListener {
                         scoreRelativeX = relativeTouchX,
                         scoreRelativeY = relativeTouchY,
                         drinkPerson = drinkPerson,
-                        brewMethod = "handdrip" // 추출 방식: 핸드드립
+                        brewMethod = "handdrip",
+                        isHot = isHot // 여기에 isHot 값을 추가합니다.
                     )
 
                     val handDripDetails = HandDripRecipeDetails(
@@ -648,60 +645,10 @@ class RecipeActivity:AppCompatActivity(), RecipeInsertListener {
                 val timemoreAlertDialog: AlertDialog?
 
                 val timemoreSelectView =
-                    LayoutInflater.from(this).inflate(R.layout.dialog_timemore_grinder, null)
+                    LayoutInflater.from(this).inflate(R.layout.dialog_grinder_picker, null)
                 val timemoreSelectBuilder = AlertDialog.Builder(this).setView(timemoreSelectView)
                 timemoreAlertDialog = timemoreSelectBuilder.create()
                 timemoreAlertDialog.show()
-
-                val timemoreBack = timemoreSelectView.findViewById<ImageButton>(R.id.imageButton)
-                val rotationSpinner = timemoreSelectView.findViewById<Spinner>(R.id.spinnerRotation)
-                val stepSeekBar = timemoreSelectView.findViewById<SeekBar>(R.id.seekBarStep)
-                val stepValueTextView = timemoreSelectView.findViewById<TextView>(R.id.textViewStepValue)
-                val timemoreConfirm = timemoreSelectView.findViewById<Button>(R.id.button2)
-                val timemoreCancel = timemoreSelectView.findViewById<Button>(R.id.button)
-
-                // 회전 수 스피너 설정
-                val rotations = listOf(0, 1, 2, 3)
-                val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, rotations)
-                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-                rotationSpinner.adapter = adapter
-
-                // SeekBar 설정
-                stepSeekBar.max = 29
-                stepSeekBar.progress = 0 // 초기값을 0으로 설정
-                stepValueTextView.text = "0" // 초기 텍스트 값도 0으로 설정
-                stepSeekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
-                    override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-                        stepValueTextView.text = progress.toString()
-                        if (fromUser) {
-                            vibrator.vibrate(VibrationEffect.createOneShot(50, VibrationEffect.DEFAULT_AMPLITUDE))
-                        }
-                    }
-
-                    override fun onStartTrackingTouch(seekBar: SeekBar?) {}
-                    override fun onStopTrackingTouch(seekBar: SeekBar?) {}
-                })
-
-                timemoreConfirm.setOnClickListener {
-                    val rotation = rotationSpinner.selectedItem.toString()
-                    val step = stepValueTextView.text.toString()
-                    val grinderString = "$rotation-$step"
-
-                    tempselectedgrinder = "Timemore C3 Esp Pro"
-                    tempgrindervalue = grinderString
-        
-                    timemoreAlertDialog.dismiss()
-                    grinderAlertDialog?.dismiss()
-                    coffeerecipegrinder?.text = "$tempselectedgrinder : [ $tempgrindervalue ]"
-                }
-
-                timemoreBack.setOnClickListener {
-                    timemoreAlertDialog.dismiss()
-                }
-
-                timemoreCancel.setOnClickListener {
-                    timemoreAlertDialog.dismiss()
-                }
             }
         }
     }

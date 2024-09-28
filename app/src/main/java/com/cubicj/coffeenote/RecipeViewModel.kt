@@ -79,6 +79,13 @@ class RecipeViewModel(
         }
     }
 
+    fun updateRecipeHotIce(recipeId: Long, isHot: Boolean) {
+        viewModelScope.launch(Dispatchers.IO) {
+            recipeDao.updateHotIce(recipeId, isHot)
+            _recipes.value = recipeDao.getRecipesWithDetailsByBeanId(selectedBeanId)
+        }
+    }
+
     // 레시피 업데이트 - 상세 정보 엔티티도 함께 업데이트
     fun updateRecipe(recipe: Recipe, details: Any?) {
         viewModelScope.launch(Dispatchers.IO) {

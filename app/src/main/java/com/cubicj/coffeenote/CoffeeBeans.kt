@@ -42,7 +42,8 @@ data class Recipe(
     @ColumnInfo(name = "점수_상대_y") var scoreRelativeY: Float? = 0f,
     @ColumnInfo(name = "마신_사람") var drinkPerson: String,
     @ColumnInfo(name = "메모") var memo: String? = null,
-    @ColumnInfo(name = "추출_방식") var brewMethod: String? = null
+    @ColumnInfo(name = "추출_방식") var brewMethod: String? = null,
+    var isHot: Boolean = true // true는 hot, false는 ice를 의미합니다.
 )
 
 // HandDripRecipeDetails 엔티티
