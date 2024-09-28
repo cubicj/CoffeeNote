@@ -89,6 +89,9 @@ interface RecipeDao {
     @Transaction
     @Query("SELECT * FROM recipes WHERE beanId = :beanId")
     fun getRecipesWithDetailsByBeanId(beanId: Long): List<RecipeWithDetails>
+    
+    @Query("UPDATE recipes SET isHot = :isHot WHERE id = :recipeId")
+    suspend fun updateHotIce(recipeId: Long, isHot: Boolean)
 }
 
 @Dao

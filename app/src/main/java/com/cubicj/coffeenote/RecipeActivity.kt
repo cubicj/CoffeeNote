@@ -135,7 +135,6 @@ class RecipeActivity:AppCompatActivity(), RecipeInsertListener {
         val iv_recipe_hotorice = mRecipeSelectView.findViewById<ImageView>(R.id.iv_recipe_hotorice)
         val coffeerecipeBack =
             mRecipeSelectView.findViewById<ImageButton>(R.id.ib_custom_recipe_back)
-        var selectedIconTemp = true
         selectDrinkPerson = mRecipeSelectView?.findViewById(R.id.btn_drink_person)
         drinkPerson = "나"
         selectDrinkPerson?.text = drinkPerson
@@ -148,6 +147,20 @@ class RecipeActivity:AppCompatActivity(), RecipeInsertListener {
         coffeerecipegrinder?.text = "" // 버튼 텍스트 초기값 설정
         coffeerecipescore?.text = String.format("%.2f", roundedScore)
 
+        var isHot = true // 기본값은 hot으로 설정
+
+        coffeerecipeiconTemp?.setOnCheckedChangeListener { group, checkedId ->
+            when (checkedId) {
+                R.id.rbtn_coffee_recipe_hot -> {
+                    iv_recipe_hotorice?.setImageResource(R.drawable.hot)
+                    isHot = true
+                }
+                R.id.rbtn_coffee_recipe_ice -> {
+                    iv_recipe_hotorice?.setImageResource(R.drawable.ice)
+                    isHot = false
+                }
+            }
+        }
 
         coffeeRecipeDate?.setOnClickListener {
             val dateSelectView =
@@ -223,21 +236,6 @@ class RecipeActivity:AppCompatActivity(), RecipeInsertListener {
             }
             backButton?.setOnClickListener {
                 tempAlertDialog?.dismiss()
-            }
-        }
-
-
-        coffeerecipeiconTemp?.setOnCheckedChangeListener { group, checkedId ->
-            when (checkedId) {
-                R.id.rbtn_coffee_recipe_hot -> {
-                    iv_recipe_hotorice?.setImageResource(R.drawable.hot)
-                    selectedIconTemp = true
-                }
-
-                R.id.rbtn_coffee_recipe_ice -> {
-                    iv_recipe_hotorice?.setImageResource(R.drawable.ice)
-                    selectedIconTemp = false
-                }
             }
         }
 
@@ -471,7 +469,8 @@ class RecipeActivity:AppCompatActivity(), RecipeInsertListener {
                         scoreRelativeX = relativeTouchX,
                         scoreRelativeY = relativeTouchY,
                         drinkPerson = drinkPerson,
-                        brewMethod = "handdrip" // 추출 방식: 핸드드립
+                        brewMethod = "handdrip",
+                        isHot = isHot // 여기에 isHot 값을 추가합니다.
                     )
 
                     val handDripDetails = HandDripRecipeDetails(
