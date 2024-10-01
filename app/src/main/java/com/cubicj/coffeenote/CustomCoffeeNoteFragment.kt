@@ -10,11 +10,19 @@ import com.cubicj.coffeenote.databinding.CustomCoffeeNoteBinding
 import android.app.Activity
 import android.content.Intent
 import android.graphics.Color
+import androidx.activity.result.contract.ActivityResultContracts
 
 class CustomCoffeeNoteFragment : DialogFragment() {
 
     private var _binding: CustomCoffeeNoteBinding? = null
     private val binding get() = _binding!!
+
+    private val colorPickerLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == android.app.Activity.RESULT_OK) {
+            val selectedColor = result.data?.getIntExtra("selectedColor", Color.BLACK) ?: Color.BLACK
+            // 여기에서 선택된 색상을 사용하는 로직을 추가하세요
+        }
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = CustomCoffeeNoteBinding.inflate(inflater, container, false)
@@ -31,7 +39,7 @@ class CustomCoffeeNoteFragment : DialogFragment() {
         )
         binding.btnNoteCreateColor.setOnClickListener {
             val intent = Intent(requireContext(), ColorPickerActivity::class.java)
-            startActivityForResult(intent, COLOR_PICKER_REQUEST_CODE)
+            colorPickerLauncher.launch(intent)
         }
 
         binding.btnNoteCreateConfirm.setOnClickListener {
@@ -44,14 +52,6 @@ class CustomCoffeeNoteFragment : DialogFragment() {
 
         binding.btnNoteCreateCancel.setOnClickListener {
             dismiss()
-        }
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == COLOR_PICKER_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
-            val selectedColor = data?.getIntExtra("selectedColor", Color.BLACK) ?: Color.BLACK
-            // 여기에서 선택된 색상을 사용하는 로직을 추가하세요
         }
     }
 
@@ -68,7 +68,4 @@ class CustomCoffeeNoteFragment : DialogFragment() {
         _binding = null
     }
 
-    companion object {
-        private const val COLOR_PICKER_REQUEST_CODE = 1001
-    }
 }

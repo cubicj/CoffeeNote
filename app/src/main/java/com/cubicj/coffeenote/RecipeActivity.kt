@@ -11,5 +11,13 @@ class RecipeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = RecipeActivityBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        binding.ibRecipePlus.setOnClickListener {
+
+        }
+
+        binding.btnRecipeBack.setOnClickListener {
+            finish()
+        }
     }
 }
