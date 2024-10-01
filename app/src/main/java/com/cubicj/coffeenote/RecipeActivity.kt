@@ -13,11 +13,16 @@ class RecipeActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.ibRecipePlus.setOnClickListener {
-
+            showSelectMethodDialog()
         }
 
         binding.btnRecipeBack.setOnClickListener {
             finish()
         }
+    }
+
+    private fun showSelectMethodDialog() {
+        val selectMethodDialog = SelectMethodDialogFragment()
+        selectMethodDialog.show(supportFragmentManager, "SelectMethodDialog")
     }
 }

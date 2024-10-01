@@ -51,6 +51,15 @@
             app:layout_constraintEnd_toStartOf="@+id/ib_beans_plus"
             app:layout_constraintTop_toTopOf="@+id/ib_beans_plus" />
 
+        <Button
+            android:id="@+id/btn_recipe_test"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Button"
+            app:layout_constraintBottom_toBottomOf="@+id/btn_coffee_note"
+            app:layout_constraintEnd_toStartOf="@+id/btn_coffee_note"
+            app:layout_constraintTop_toTopOf="@+id/btn_coffee_note" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.recyclerview.widget.RecyclerView

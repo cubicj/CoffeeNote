@@ -19,6 +19,11 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+        binding.btnRecipeTest.setOnClickListener {
+            val intent = Intent(this, RecipeActivity::class.java)
+            startActivity(intent)
+        }
+
         binding.ibBeansPlus.setOnClickListener {
             openCustomCoffeeBeansFragment()
         }
