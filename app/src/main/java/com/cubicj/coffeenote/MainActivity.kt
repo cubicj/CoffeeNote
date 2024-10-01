@@ -1,5 +1,6 @@
 package com.cubicj.coffeenote
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.cubicj.coffeenote.databinding.MainActivityBinding
@@ -14,7 +15,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.btnCoffeeNote.setOnClickListener {
-            // 여기에 다른 기능 구현
+            val intent = Intent(this, NoteActivity::class.java)
+            startActivity(intent)
         }
 
         binding.ibBeansPlus.setOnClickListener {

@@ -11,5 +11,18 @@ class NoteActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = NoteActivityBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        binding.ibNotePlus.setOnClickListener {
+            openCustomCoffeeNoteFragment()
+        }
+
+        binding.ibNoteBack.setOnClickListener {
+            finish()
+        }
+    }
+
+    private fun openCustomCoffeeNoteFragment() {
+        val fragment = CustomCoffeeNoteFragment()
+        fragment.show(supportFragmentManager, "CustomCoffeeNoteFragment")
     }
 }
