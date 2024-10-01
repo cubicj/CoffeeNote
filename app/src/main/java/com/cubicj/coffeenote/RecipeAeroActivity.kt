@@ -23,7 +23,7 @@ class RecipeAeroActivity : AppCompatActivity() {
 
         // 날짜 선택 버튼
         binding.btnInfoDate.setOnClickListener {
-            // 날짜 선택 다이얼로그 표시
+            showDatePickerDialog()
         }
 
         // 온도 선택 버튼
@@ -64,6 +64,14 @@ class RecipeAeroActivity : AppCompatActivity() {
         // 라디오 그룹 리스너 설정
         binding.rgHotorice.setOnCheckedChangeListener { group, checkedId ->
         }
+    }
+
+    private fun showDatePickerDialog() {
+        val datePickerDialog = InfoCalendarDialogFragment()
+        datePickerDialog.setOnDateSelectedListener { selectedDate ->
+            binding.btnInfoDate.text = selectedDate
+        }
+        datePickerDialog.show(supportFragmentManager, "DatePickerDialog")
     }
 
     private fun saveRecipe() {

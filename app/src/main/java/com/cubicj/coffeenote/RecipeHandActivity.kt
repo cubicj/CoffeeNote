@@ -3,6 +3,7 @@ package com.cubicj.coffeenote
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.cubicj.coffeenote.databinding.CustomHandRecipeBinding
+import com.cubicj.coffeenote.InfoCalendarDialogFragment
 
 class RecipeHandActivity : AppCompatActivity() {
     private lateinit var binding: CustomHandRecipeBinding
@@ -23,7 +24,7 @@ class RecipeHandActivity : AppCompatActivity() {
 
         // 날짜 선택 버튼
         binding.btnInfoDate.setOnClickListener {
-            // 날짜 선택 다이얼로그 표시
+            showDatePickerDialog()
         }
 
         // 온도 선택 버튼
@@ -64,6 +65,14 @@ class RecipeHandActivity : AppCompatActivity() {
         // 라디오 그룹 리스너 설정
         binding.rgHotorice.setOnCheckedChangeListener { group, checkedId ->
         }
+    }
+
+    private fun showDatePickerDialog() {
+        val datePickerDialog = InfoCalendarDialogFragment()
+        datePickerDialog.setOnDateSelectedListener { selectedDate ->
+            binding.btnInfoDate.text = selectedDate
+        }
+        datePickerDialog.show(supportFragmentManager, "DatePickerDialog")
     }
 
     private fun saveRecipe() {
