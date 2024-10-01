@@ -7,6 +7,9 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import androidx.fragment.app.DialogFragment
 import com.cubicj.coffeenote.databinding.CustomCoffeeNoteBinding
+import android.app.Activity
+import android.content.Intent
+import android.graphics.Color
 
 class CustomCoffeeNoteFragment : DialogFragment() {
 
@@ -27,7 +30,8 @@ class CustomCoffeeNoteFragment : DialogFragment() {
             WindowManager.LayoutParams.WRAP_CONTENT
         )
         binding.btnNoteCreateColor.setOnClickListener {
-
+            val intent = Intent(requireContext(), ColorPickerActivity::class.java)
+            startActivityForResult(intent, COLOR_PICKER_REQUEST_CODE)
         }
 
         binding.btnNoteCreateConfirm.setOnClickListener {
@@ -43,6 +47,14 @@ class CustomCoffeeNoteFragment : DialogFragment() {
         }
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == COLOR_PICKER_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+            val selectedColor = data?.getIntExtra("selectedColor", Color.BLACK) ?: Color.BLACK
+            // 여기에서 선택된 색상을 사용하는 로직을 추가하세요
+        }
+    }
+
     override fun onStart() {
         super.onStart()
         dialog?.window?.setLayout(
@@ -54,5 +66,9 @@ class CustomCoffeeNoteFragment : DialogFragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    companion object {
+        private const val COLOR_PICKER_REQUEST_CODE = 1001
     }
 }
