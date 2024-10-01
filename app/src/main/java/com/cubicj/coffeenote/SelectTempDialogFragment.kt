@@ -28,10 +28,19 @@ class SelectTempDialogFragment : DialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.npCoffeeTemp.minValue = 0
-        binding.npCoffeeTemp.maxValue = 100
-        binding.npCoffeeTemp.value = 90  // 초기값을 90으로 설정
+        setupNumberPicker()
+        setupButtons()
+    }
 
+    private fun setupNumberPicker() {
+        binding.npCoffeeTemp.apply {
+            minValue = 0
+            maxValue = 100
+            value = initialTemp
+        }
+    }
+
+    private fun setupButtons() {
         binding.ibTempBack.setOnClickListener { dismiss() }
         binding.btnTempCalcel.setOnClickListener { dismiss() }
         binding.btnTempConfirm.setOnClickListener {

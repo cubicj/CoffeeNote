@@ -6,6 +6,7 @@ import com.cubicj.coffeenote.databinding.CustomAeroRecipeBinding
 
 class RecipeAeroActivity : AppCompatActivity() {
     private lateinit var binding: CustomAeroRecipeBinding
+    private var currentTemp: Int = 90
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,9 +27,12 @@ class RecipeAeroActivity : AppCompatActivity() {
             showDatePickerDialog()
         }
 
+        // 온도 버튼 초기 텍스트 설정
+        updateTempButtonText()
+
         // 온도 선택 버튼
         binding.btnInfoTemp.setOnClickListener {
-            // 온도 선택 다이얼로그 표시
+            showTempPickerDialog()
         }
 
         // 분쇄도 선택 버튼
@@ -72,6 +76,19 @@ class RecipeAeroActivity : AppCompatActivity() {
             binding.btnInfoDate.text = selectedDate
         }
         datePickerDialog.show(supportFragmentManager, "DatePickerDialog")
+    }
+
+    private fun showTempPickerDialog() {
+        val tempPickerDialog = SelectTempDialogFragment.newInstance(currentTemp)
+        tempPickerDialog.setOnTempSelectedListener { selectedTemp ->
+            currentTemp = selectedTemp
+            updateTempButtonText()
+        }
+        tempPickerDialog.show(supportFragmentManager, "TempPickerDialog")
+    }
+
+    private fun updateTempButtonText() {
+        binding.btnInfoTemp.text = "${currentTemp}°C"
     }
 
     private fun saveRecipe() {
