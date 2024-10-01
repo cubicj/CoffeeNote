@@ -38,6 +38,12 @@
         <activity
             android:name=".ColorPickerActivity"
             android:exported="false" />
+        <activity
+            android:name=".RecipeHandActivity"
+            android:exported="false" />
+        <activity
+            android:name=".RecipeAeroActivity"
+            android:exported="false" />
     </application>
 
 </manifest>

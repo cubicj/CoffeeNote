@@ -2,14 +2,14 @@ package com.cubicj.coffeenote
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.cubicj.coffeenote.databinding.CustomHandRecipeBinding
+import com.cubicj.coffeenote.databinding.CustomAeroRecipeBinding
 
-class RecipeHandActivity : AppCompatActivity() {
-    private lateinit var binding: CustomHandRecipeBinding
+class RecipeAeroActivity : AppCompatActivity() {
+    private lateinit var binding: CustomAeroRecipeBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = CustomHandRecipeBinding.inflate(layoutInflater)
+        binding = CustomAeroRecipeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         setupViews()

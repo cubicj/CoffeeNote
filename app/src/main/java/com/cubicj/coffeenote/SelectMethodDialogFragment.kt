@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import com.cubicj.coffeenote.databinding.SelectMethodBinding
 import android.view.WindowManager
+import android.content.Intent
 
 class SelectMethodDialogFragment : DialogFragment() {
     private lateinit var binding: SelectMethodBinding
@@ -24,12 +25,15 @@ class SelectMethodDialogFragment : DialogFragment() {
         }
 
         binding.btnMethodHand.setOnClickListener {
-            // 핸드드립 선택 시 동작
+            // 핸드드립 선택 시 RecipeHandActivity로 이동
+            val intent = Intent(requireContext(), RecipeHandActivity::class.java)
+            startActivity(intent)
             dismiss()
         }
 
         binding.btnMethodAero.setOnClickListener {
-            // 에어로프레스 선택 시 동작
+            val intent = Intent(requireContext(), RecipeAeroActivity::class.java)
+            startActivity(intent)
             dismiss()
         }
     }
