@@ -14,12 +14,16 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.btnCoffeeNote.setOnClickListener {
-
+            // 여기에 다른 기능 구현
         }
 
         binding.ibBeansPlus.setOnClickListener {
-
+            openCustomCoffeeBeansFragment()
         }
+    }
 
+    private fun openCustomCoffeeBeansFragment() {
+        val fragment = CustomCoffeeBeansFragment()
+        fragment.show(supportFragmentManager, "CustomCoffeeBeansFragment")
     }
 }
