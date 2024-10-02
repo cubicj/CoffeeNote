@@ -92,7 +92,7 @@ class RecipeAeroActivity : AppCompatActivity() {
     }
 
     private fun showGrinderPickerDialog() {
-        val grinderPickerDialog = GrinderPickerDialogFragment()
+        val grinderPickerDialog = SelectGrinderDialogFragment()
         grinderPickerDialog.show(supportFragmentManager, "GrinderPickerDialog")
     }
 

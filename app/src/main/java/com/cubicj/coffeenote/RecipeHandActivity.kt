@@ -3,8 +3,6 @@ package com.cubicj.coffeenote
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.cubicj.coffeenote.databinding.CustomHandRecipeBinding
-import com.cubicj.coffeenote.InfoCalendarDialogFragment
-import com.cubicj.coffeenote.SelectTempDialogFragment
 
 class RecipeHandActivity : AppCompatActivity() {
     private lateinit var binding: CustomHandRecipeBinding
@@ -94,7 +92,7 @@ class RecipeHandActivity : AppCompatActivity() {
     }
 
     private fun showGrinderPickerDialog() {
-        val grinderPickerDialog = GrinderPickerDialogFragment()
+        val grinderPickerDialog = SelectGrinderDialogFragment()
         grinderPickerDialog.show(supportFragmentManager, "GrinderPickerDialog")
     }
 
@@ -102,7 +100,7 @@ class RecipeHandActivity : AppCompatActivity() {
         finish()
     }
 
-    fun updateGrinderSelection(grinderName: String) {
-        binding.btnInfoGrinder.text = grinderName
+    fun updateGrinderSelection(grinderInfo: String) {
+        binding.btnInfoGrinder.text = grinderInfo
     }
 }

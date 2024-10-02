@@ -113,7 +113,7 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/btn_timemore_cancel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
@@ -121,19 +121,19 @@
             android:layout_marginBottom="32dp"
             android:text="취소"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/button2"
+            app:layout_constraintEnd_toStartOf="@+id/btn_timemore_confirm"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <Button
-            android:id="@+id/button2"
+            android:id="@+id/btn_timemore_confirm"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="확인"
-            app:layout_constraintBottom_toBottomOf="@+id/button"
+            app:layout_constraintBottom_toBottomOf="@+id/btn_timemore_cancel"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/button"
-            app:layout_constraintTop_toTopOf="@+id/button" />
+            app:layout_constraintStart_toEndOf="@+id/btn_timemore_cancel"
+            app:layout_constraintTop_toTopOf="@+id/btn_timemore_cancel" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
