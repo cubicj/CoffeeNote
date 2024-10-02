@@ -37,7 +37,7 @@ class RecipeAeroActivity : AppCompatActivity() {
 
         // 분쇄도 선택 버튼
         binding.btnInfoGrinder.setOnClickListener {
-            // 분쇄도 선택 다이얼로그 표시
+            showGrinderPickerDialog()
         }
 
         // 점수 선택 버튼
@@ -89,6 +89,11 @@ class RecipeAeroActivity : AppCompatActivity() {
 
     private fun updateTempButtonText() {
         binding.btnInfoTemp.text = "${currentTemp}°C"
+    }
+
+    private fun showGrinderPickerDialog() {
+        val grinderPickerDialog = GrinderPickerDialogFragment()
+        grinderPickerDialog.show(supportFragmentManager, "GrinderPickerDialog")
     }
 
     private fun saveRecipe() {
