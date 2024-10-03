@@ -52,7 +52,7 @@ class RecipeHandActivity : AppCompatActivity() {
 
         // 마신 사람 선택 버튼
         binding.btnDrinkPerson.setOnClickListener {
-            // 마신 사람 선택 다이얼로그 표시
+            showDrinkPersonDialog()
         }
 
         // 시간 및 양 설정 버튼
@@ -137,5 +137,10 @@ class RecipeHandActivity : AppCompatActivity() {
 
     fun updateGrinderSelection(grinderInfo: String) {
         binding.btnInfoGrinder.text = grinderInfo
+    }
+
+    private fun showDrinkPersonDialog() {
+        val drinkPersonDialog = DrinkPersonDialogFragment()
+        drinkPersonDialog.show(supportFragmentManager, DrinkPersonDialogFragment.TAG)
     }
 }

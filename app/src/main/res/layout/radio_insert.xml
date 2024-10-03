@@ -5,35 +5,49 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="16dp">
+    android:padding="24dp">
 
-    <Button
-        android:id="@+id/btn_cancel_radio"
+    <TextView
+        android:id="@+id/tv_radio_insert_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:text="취소"
-        app:layout_constraintBottom_toBottomOf="@+id/btn_add_radio"
+        android:text="새로운 사람 추가"
+        android:textSize="20sp"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/btn_add_radio" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/et_radio_add"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:hint="새로운 라디오 버튼 텍스트 입력"
+        android:layout_marginTop="16dp"
+        android:hint="새로운 사람 이름 입력"
+        android:inputType="text"
+        android:maxLines="1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_radio_insert_title" />
+
+    <Button
+        android:id="@+id/btn_cancel_radio"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="8dp"
+        android:text="취소"
+        app:layout_constraintEnd_toStartOf="@+id/btn_add_radio"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/et_radio_add" />
 
     <Button
         android:id="@+id/btn_add_radio"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="24dp"
-        android:text="입력"
+        android:layout_marginStart="8dp"
+        android:text="추가"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_radio_add" />
+        app:layout_constraintStart_toEndOf="@+id/btn_cancel_radio"
+        app:layout_constraintTop_toTopOf="@+id/btn_cancel_radio" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
