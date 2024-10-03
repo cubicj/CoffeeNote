@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/tvTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="브루잉 시간 및 양 설정"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginBottom="16dp"/>
+
+    <TextView
+        android:id="@+id/tvSelectedTime"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:gravity="center"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@id/btnDeleteTime"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvTitle" />
+
+    <Button
+        android:id="@+id/btnDeleteTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="삭제"
+        app:layout_constraintTop_toTopOf="@id/tvSelectedTime"
+        app:layout_constraintBottom_toBottomOf="@id/tvSelectedTime"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <TextView
+        android:id="@+id/tvTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="시간:"
+        app:layout_constraintTop_toBottomOf="@id/tvSelectedTime"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="16dp"/>
+
+    <NumberPicker
+        android:id="@+id/npMinutesTens"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="@id/tvTime"
+        app:layout_constraintStart_toEndOf="@id/tvTime"
+        android:layout_marginStart="16dp"/>
+
+    <NumberPicker
+        android:id="@+id/npMinutesOnes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="@id/npMinutesTens"
+        app:layout_constraintStart_toEndOf="@id/npMinutesTens"
+        android:layout_marginStart="8dp"/>
+
+    <TextView
+        android:id="@+id/tvMinutes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="분"
+        app:layout_constraintTop_toTopOf="@id/npMinutesOnes"
+        app:layout_constraintBottom_toBottomOf="@id/npMinutesOnes"
+        app:layout_constraintStart_toEndOf="@id/npMinutesOnes"
+        android:layout_marginStart="8dp"/>
+
+    <NumberPicker
+        android:id="@+id/npSecondsTens"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="@id/npMinutesTens"
+        app:layout_constraintStart_toEndOf="@id/tvMinutes"
+        android:layout_marginStart="16dp"/>
+
+    <NumberPicker
+        android:id="@+id/npSecondsOnes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="@id/npSecondsTens"
+        app:layout_constraintStart_toEndOf="@id/npSecondsTens"
+        android:layout_marginStart="8dp"/>
+
+    <TextView
+        android:id="@+id/tvSeconds"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="초"
+        app:layout_constraintTop_toTopOf="@id/npSecondsOnes"
+        app:layout_constraintBottom_toBottomOf="@id/npSecondsOnes"
+        app:layout_constraintStart_toEndOf="@id/npSecondsOnes"
+        android:layout_marginStart="8dp"/>
+
+    <Button
+        android:id="@+id/btnInputTime"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="입력"
+        app:layout_constraintTop_toBottomOf="@id/npMinutesTens"
+        app:layout_constraintStart_toStartOf="@id/npMinutesTens"
+        app:layout_constraintEnd_toEndOf="@id/tvSeconds"
+        android:layout_marginTop="16dp"/>
+
+    <TextView
+        android:id="@+id/tvSelectedAmount"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="8dp"
+        android:gravity="center"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@id/btnDeleteAmount"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btnInputTime" />
+
+    <Button
+        android:id="@+id/btnDeleteAmount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="삭제"
+        app:layout_constraintTop_toTopOf="@id/tvSelectedAmount"
+        app:layout_constraintBottom_toBottomOf="@id/tvSelectedAmount"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <TextView
+        android:id="@+id/tvAmount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="양:"
+        app:layout_constraintTop_toBottomOf="@id/tvSelectedAmount"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="16dp"/>
+
+    <NumberPicker
+        android:id="@+id/npAmountHundreds"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="@id/tvAmount"
+        app:layout_constraintStart_toStartOf="@id/npMinutesTens"/>
+
+    <NumberPicker
+        android:id="@+id/npAmountTens"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="@id/npAmountHundreds"
+        app:layout_constraintStart_toEndOf="@id/npAmountHundreds"
+        android:layout_marginStart="8dp"/>
+
+    <NumberPicker
+        android:id="@+id/npAmountOnes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="@id/npAmountTens"
+        app:layout_constraintStart_toEndOf="@id/npAmountTens"
+        android:layout_marginStart="8dp"/>
+
+    <TextView
+        android:id="@+id/tvMl"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ml"
+        app:layout_constraintTop_toTopOf="@id/npAmountOnes"
+        app:layout_constraintBottom_toBottomOf="@id/npAmountOnes"
+        app:layout_constraintStart_toEndOf="@id/npAmountOnes"
+        android:layout_marginStart="8dp"/>
+
+    <Button
+        android:id="@+id/btnInputAmount"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="입력"
+        app:layout_constraintEnd_toEndOf="@+id/btnInputTime"
+        app:layout_constraintStart_toStartOf="@id/npAmountHundreds"
+        app:layout_constraintTop_toBottomOf="@id/npAmountHundreds" />
+
+    <Button
+        android:id="@+id/btnCancel"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:text="취소"
+        app:layout_constraintEnd_toStartOf="@id/btnConfirm"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnInputAmount" />
+
+    <Button
+        android:id="@+id/btnConfirm"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="확인"
+        app:layout_constraintTop_toTopOf="@id/btnCancel"
+        app:layout_constraintStart_toEndOf="@id/btnCancel"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="8dp"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

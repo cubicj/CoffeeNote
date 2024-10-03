@@ -57,7 +57,7 @@ class RecipeHandActivity : AppCompatActivity() {
 
         // 시간 및 양 설정 버튼
         binding.btnTimeamountset.setOnClickListener {
-            // 시간 및 양 설정 다이얼로그 표시
+            showTimeAmountDialog()
         }
 
         // 저장 버튼
@@ -142,5 +142,10 @@ class RecipeHandActivity : AppCompatActivity() {
     private fun showDrinkPersonDialog() {
         val drinkPersonDialog = DrinkPersonDialogFragment()
         drinkPersonDialog.show(supportFragmentManager, DrinkPersonDialogFragment.TAG)
+    }
+
+    private fun showTimeAmountDialog() {
+        val dialog = TimeAmountDialogFragment()
+        dialog.show(supportFragmentManager, TimeAmountDialogFragment.TAG)
     }
 }
