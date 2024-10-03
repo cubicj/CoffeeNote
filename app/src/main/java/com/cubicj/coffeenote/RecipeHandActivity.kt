@@ -1,6 +1,10 @@
 package com.cubicj.coffeenote
 
 import android.os.Bundle
+import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.Spinner
 import androidx.appcompat.app.AppCompatActivity
 import com.cubicj.coffeenote.databinding.CustomHandRecipeBinding
 
@@ -14,6 +18,7 @@ class RecipeHandActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         setupViews()
+        setupSpinner()
     }
 
     private fun setupViews() {
@@ -64,10 +69,40 @@ class RecipeHandActivity : AppCompatActivity() {
         binding.btnCoffeeRecipeCancel.setOnClickListener {
             finish()
         }
+    }
 
-        // 라디오 그룹 리스너 설정
-        binding.rgHotorice.setOnCheckedChangeListener { group, checkedId ->
+    private fun setupSpinner() {
+        val spinner: Spinner = binding.spinnerCoffeeType
+        ArrayAdapter.createFromResource(
+            this,
+            R.array.hand_coffee_types,
+            android.R.layout.simple_spinner_item
+        ).also { adapter ->
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            spinner.adapter = adapter
         }
+
+        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
+                val selectedItem = parent.getItemAtPosition(position).toString()
+                when (selectedItem) {
+                    "핫 필터커피" -> handleHotFilterCoffee()
+                    "아이스 필터커피" -> handleIceFilterCoffee()
+                }
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>) {
+                // 아무것도 선택되지 않았을 때의 처리
+            }
+        }
+    }
+
+    private fun handleHotFilterCoffee() {
+        // 핫 필터커피가 선택되었을 때의 처리
+    }
+
+    private fun handleIceFilterCoffee() {
+        // 아이스 필터커피가 선택되었을 때의 처리
     }
 
     private fun showDatePickerDialog() {
