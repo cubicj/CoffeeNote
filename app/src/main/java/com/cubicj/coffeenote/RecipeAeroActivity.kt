@@ -1,6 +1,10 @@
 package com.cubicj.coffeenote
 
 import android.os.Bundle
+import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.Spinner
 import androidx.appcompat.app.AppCompatActivity
 import com.cubicj.coffeenote.databinding.CustomAeroRecipeBinding
 
@@ -14,6 +18,7 @@ class RecipeAeroActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         setupViews()
+        setupSpinner()
     }
 
     private fun setupViews() {
@@ -64,10 +69,51 @@ class RecipeAeroActivity : AppCompatActivity() {
         binding.btnCoffeeRecipeCancel.setOnClickListener {
             finish()
         }
+    }
 
-        // 라디오 그룹 리스너 설정
-        binding.rgHotorice.setOnCheckedChangeListener { group, checkedId ->
+    private fun setupSpinner() {
+        val spinner: Spinner = binding.spinnerCoffeeType
+        ArrayAdapter.createFromResource(
+            this,
+            R.array.coffee_types,
+            android.R.layout.simple_spinner_item
+        ).also { adapter ->
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            spinner.adapter = adapter
         }
+
+        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
+                val selectedItem = parent.getItemAtPosition(position).toString()
+                // 선택된 아이템에 대한 처리
+                when (selectedItem) {
+                    "핫 라떼" -> handleHotLatte()
+                    "아이스 라떼" -> handleIceLatte()
+                    "핫 아메리카노" -> handleHotAmericano()
+                    "아이스 아메리카노" -> handleIceAmericano()
+                }
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>) {
+                // 아무것도 선택되지 않았을 때의 처리
+            }
+        }
+    }
+
+    private fun handleHotLatte() {
+        // 핫 라떼가 선택되었을 때의 처리
+    }
+
+    private fun handleIceLatte() {
+        // 아이스 라떼가 선택되었을 때의 처리
+    }
+
+    private fun handleHotAmericano() {
+        // 핫 아메리카노가 선택되었을 때의 처리
+    }
+
+    private fun handleIceAmericano() {
+        // 아이스 아메리카노가 선택되었을 때의 처리
     }
 
     private fun showDatePickerDialog() {
